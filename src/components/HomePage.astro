@@ -1,0 +1,237 @@
+---
+import fs from "node:fs";
+import ProjectCard from "./ProjectCard.astro";
+import { projects } from "../data/projects";
+import type { Locale } from "../i18n";
+
+const { locale } = Astro.props as { locale: Locale };
+const basePath = locale === "fr" ? "/fr" : "/en";
+const asciiPath = new URL("../assets/me.ascii.txt", import.meta.url);
+let asciiPortrait = "";
+
+try {
+  asciiPortrait = fs.readFileSync(asciiPath, "utf-8");
+} catch {
+  asciiPortrait = "";
+}
+
+const hasAsciiPortrait = asciiPortrait.trim().length > 0;
+
+const copy = {
+  fr: {
+    currentlyBuilding: "En ce moment :",
+    currentProject: "Paperboy",
+    currentStatus: "MVP",
+    heroTitle: "Je construis des produits & outils —",
+    heroSubtitle: "de l'idée au produit livré.",
+    heroDescription:
+      "CTO / Product Engineer. TALL stack (Laravel, Livewire, Tailwind, Alpine). Mainteneur open source. Je construis aussi des expériences macOS/iOS et des projets créatifs.",
+    ctaWork: "Projets sélectionnés",
+    ctaContact: "Discutons",
+    tags: ["SaaS", "Open source", "macOS", "Produit"],
+    availability: "Basé en France · Disponible pour des projets sélectionnés",
+    workTitle: "Projets sélectionnés",
+    workDescription: "Six projets qui représentent le mieux ce que je fais aujourd'hui.",
+    ossTitle: "Open source",
+    ossDescription: "Des packages que je maintiens et livre à la communauté.",
+    ossCards: [
+      {
+        label: "Filament Job Monitor",
+        value: "224★",
+        description: "Monitoring des jobs + UI pour Filament.",
+      },
+      {
+        label: "Zed pour Laravel",
+        value: "63★",
+        description: "Intégration et outillage pour l'éditeur.",
+      },
+      {
+        label: "Expériences macOS",
+        value: "NotchHub",
+        description: "Hub de notifications pour le notch + autres idées.",
+      },
+    ],
+    contactTitle: "Construisons quelque chose d'utile.",
+    contactDescription: "Si vous cherchez un builder qui shippe, itère et soigne le craft.",
+    contactCtaEmail: "M'écrire",
+    contactLinkedIn: "LinkedIn",
+    contactGitHub: "GitHub",
+    portraitAlt: "Portrait ASCII de Baptiste Bouillot",
+  },
+  en: {
+    currentlyBuilding: "Currently building:",
+    currentProject: "Paperboy",
+    currentStatus: "MVP",
+    heroTitle: "I build products & tools —",
+    heroSubtitle: "from idea to shipped.",
+    heroDescription:
+      "CTO / Product Engineer. TALL stack (Laravel, Livewire, Tailwind, Alpine). Open-source maintainer. Also building macOS/iOS experiments and creative projects.",
+    ctaWork: "Selected work",
+    ctaContact: "Let's talk",
+    tags: ["SaaS", "Open-source", "macOS", "Product"],
+    availability: "Based in France · Available for selected projects",
+    workTitle: "Selected work",
+    workDescription: "Six projects that best represent what I do today.",
+    ossTitle: "Open-source",
+    ossDescription: "Packages I maintain and ship to the community.",
+    ossCards: [
+      {
+        label: "Filament Job Monitor",
+        value: "224★",
+        description: "Jobs monitoring + UI for Filament.",
+      },
+      {
+        label: "Zed for Laravel",
+        value: "63★",
+        description: "Editor integration & tooling.",
+      },
+      {
+        label: "macOS experiments",
+        value: "NotchHub",
+        description: "Notification hub for the Mac notch + more.",
+      },
+    ],
+    contactTitle: "Let’s build something useful.",
+    contactDescription: "If you want a builder who ships, iterates, and cares about craft.",
+    contactCtaEmail: "Email me",
+    contactLinkedIn: "LinkedIn",
+    contactGitHub: "GitHub",
+    portraitAlt: "ASCII portrait of Baptiste Bouillot",
+  },
+};
+
+const t = copy[locale];
+---
+
+{/* HERO */}
+<section class="grid gap-10 pb-16 pt-6 md:grid-cols-12 md:items-end" aria-labelledby="hero-title">
+  <div class="md:col-span-7">
+    <div class="animate-on-scroll inline-flex items-center gap-2 rounded-full border border-zinc-200 bg-white px-3 py-1 text-xs text-zinc-700 shadow-sm transition hover:border-zinc-300 hover:shadow-md">
+      <span class="pulse-dot h-1.5 w-1.5 rounded-full bg-[rgb(var(--accent))]"></span>
+      {t.currentlyBuilding} <span class="font-medium">{t.currentProject}</span> → {t.currentStatus}
+    </div>
+
+    <h1 id="hero-title" class="animate-on-scroll stagger-1 mt-6 text-4xl font-semibold tracking-tight md:text-6xl md:leading-[1.05]">
+      {t.heroTitle}
+      <span class="text-zinc-400"> {t.heroSubtitle}</span>
+    </h1>
+
+    <p class="animate-on-scroll stagger-2 mt-5 max-w-xl text-base leading-relaxed text-zinc-600 md:text-lg">
+      {t.heroDescription}
+    </p>
+
+    <div class="animate-on-scroll stagger-3 mt-8 flex flex-wrap items-center gap-3">
+      <a
+        href={`${basePath}#work`}
+        class="btn-shine rounded-full bg-zinc-900 px-5 py-2.5 text-sm font-medium text-white shadow transition hover:-translate-y-0.5 hover:bg-zinc-800 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[rgb(var(--accent))]"
+      >
+        {t.ctaWork}
+      </a>
+      <a
+        href={`${basePath}#contact`}
+        class="rounded-full border border-zinc-200 bg-white px-5 py-2.5 text-sm font-medium text-zinc-900 shadow-sm transition hover:-translate-y-0.5 hover:border-zinc-300 hover:bg-white focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[rgb(var(--accent))]"
+      >
+        {t.ctaContact}
+      </a>
+
+      <div class="ml-1 flex flex-wrap gap-2 text-xs text-zinc-500">
+        {t.tags.map((tag) => (
+          <span class="tag-hover rounded-full border border-zinc-200 bg-white px-3 py-1">{tag}</span>
+        ))}
+      </div>
+    </div>
+  </div>
+
+  {/* PHOTO */}
+  <div class="animate-on-scroll stagger-2 md:col-span-5">
+    <div class="group relative overflow-hidden rounded-3xl border border-zinc-200 bg-white shadow-sm transition hover:-translate-y-1 hover:shadow-md">
+      <div class="absolute -right-20 -top-20 h-48 w-48 rounded-full bg-[rgb(var(--accent)/0.08)] blur-3xl"></div>
+      <div class="relative aspect-[4/5] w-full">
+        {hasAsciiPortrait ? (
+          <pre
+            class="ascii-portrait absolute inset-0 overflow-hidden bg-white px-4 py-3 font-mono text-[6px] leading-[6px] text-zinc-500 md:text-[7px] md:leading-[7px]"
+            role="img"
+            aria-label={t.portraitAlt}
+          >
+{asciiPortrait}
+          </pre>
+        ) : (
+          <img
+            src="/images/me.jpg"
+            alt={t.portraitAlt}
+            class="absolute inset-0 h-full w-full object-cover"
+            loading="lazy"
+          />
+        )}
+      </div>
+      <div class="absolute inset-x-0 bottom-0 p-5">
+        <div class="rounded-2xl border border-zinc-200 bg-white/90 px-4 py-3 backdrop-blur transition group-hover:border-zinc-300">
+          <p class="text-sm text-zinc-700">{t.availability}</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+{/* WORK */}
+<section id="work" class="py-10" aria-labelledby="work-title">
+  <div class="animate-on-scroll">
+    <h2 id="work-title" class="text-2xl font-semibold tracking-tight">{t.workTitle}</h2>
+    <p class="mt-2 text-zinc-600">{t.workDescription}</p>
+  </div>
+
+  <div class="mt-8 grid gap-5 md:grid-cols-2">
+    {projects.map((p, index) => <ProjectCard p={p} locale={locale} index={index} />)}
+  </div>
+</section>
+
+{/* OPEN SOURCE */}
+<section id="oss" class="py-10" aria-labelledby="oss-title">
+  <div class="animate-on-scroll">
+    <h2 id="oss-title" class="text-2xl font-semibold tracking-tight">{t.ossTitle}</h2>
+    <p class="mt-2 text-zinc-600">{t.ossDescription}</p>
+  </div>
+
+  <div class="mt-6 grid gap-4 md:grid-cols-3">
+    {t.ossCards.map((card, index) => (
+      <div class={`animate-on-scroll stagger-${index + 1} card-glow group rounded-3xl border border-zinc-200 bg-white p-6 shadow-sm transition hover:-translate-y-0.5 hover:border-zinc-300 hover:shadow-md`}>
+        <p class="text-sm text-zinc-600 transition group-hover:text-[rgb(var(--accent))]">{card.label}</p>
+        <p class="mt-2 text-3xl font-semibold">{card.value}</p>
+        <p class="mt-2 text-sm text-zinc-500">{card.description}</p>
+      </div>
+    ))}
+  </div>
+</section>
+
+{/* CONTACT */}
+<section id="contact" class="py-14" aria-labelledby="contact-title">
+  <div class="animate-scale rounded-3xl border border-zinc-200 bg-white p-8 shadow-sm">
+    <h2 id="contact-title" class="text-2xl font-semibold tracking-tight">{t.contactTitle}</h2>
+    <p class="mt-2 text-zinc-600">{t.contactDescription}</p>
+
+    <div class="mt-6 flex flex-wrap gap-3 text-sm">
+      <a
+        class="btn-shine rounded-full bg-zinc-900 px-5 py-2.5 font-medium text-white transition hover:-translate-y-0.5 hover:bg-zinc-800 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[rgb(var(--accent))]"
+        href="mailto:hello@baptiste.ultraviolettes.fr"
+      >
+        {t.contactCtaEmail}
+      </a>
+      <a
+        class="rounded-full border border-zinc-200 bg-white px-5 py-2.5 font-medium transition hover:-translate-y-0.5 hover:border-zinc-300 hover:bg-white focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[rgb(var(--accent))]"
+        href="https://www.linkedin.com/"
+        target="_blank"
+        rel="noreferrer"
+      >
+        {t.contactLinkedIn}
+      </a>
+      <a
+        class="rounded-full border border-zinc-200 bg-white px-5 py-2.5 font-medium transition hover:-translate-y-0.5 hover:border-zinc-300 hover:bg-white focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[rgb(var(--accent))]"
+        href="https://github.com/"
+        target="_blank"
+        rel="noreferrer"
+      >
+        {t.contactGitHub}
+      </a>
+    </div>
+  </div>
+</section>

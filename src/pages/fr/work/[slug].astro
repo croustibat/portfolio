@@ -1,0 +1,27 @@
+---
+import BaseLayout from "../../../layouts/BaseLayout.astro";
+import CaseStudyPage from "../../../components/CaseStudyPage.astro";
+import { projects } from "../../../data/projects";
+import { pick } from "../../../i18n";
+
+export function getStaticPaths() {
+  return projects.map((p) => ({ params: { slug: p.slug } }));
+}
+
+const { slug } = Astro.params;
+const p = projects.find((x) => x.slug === slug);
+
+if (!p) {
+  throw new Error(`Project not found: ${slug}`);
+}
+---
+
+<BaseLayout
+  locale="fr"
+  title={`${pick(p.name, "fr")} — Étude de cas`}
+  description={pick(p.oneLiner, "fr")}
+  ogType="article"
+  ogImage={p.cover}
+>
+  <CaseStudyPage p={p} locale="fr" />
+</BaseLayout>

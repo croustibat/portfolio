@@ -4,11 +4,16 @@
   "version": "0.0.1",
   "scripts": {
     "dev": "astro dev",
+    "generate:ascii": "node scripts/generate-ascii.mjs",
+    "prebuild": "npm run generate:ascii",
     "build": "astro build",
     "preview": "astro preview",
     "astro": "astro"
   },
   "dependencies": {
-    "astro": "^5.16.9"
+    "@tailwindcss/vite": "^4.1.18",
+    "astro": "^5.16.9",
+    "sharp": "^0.34.4",
+    "tailwindcss": "^4.1.18"
   }
 }
