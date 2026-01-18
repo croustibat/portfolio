@@ -1,21 +1,12 @@
 ---
-import fs from "node:fs";
 import ProjectCard from "./ProjectCard.astro";
 import { projects } from "../data/projects";
 import type { Locale } from "../i18n";
+import asciiPortrait from "../assets/me.ascii.txt?raw";
 
 const { locale } = Astro.props as { locale: Locale };
 const basePath = locale === "fr" ? "/fr" : "/en";
-const asciiPath = new URL("../assets/me.ascii.txt", import.meta.url);
-let asciiPortrait = "";
-
-try {
-  asciiPortrait = fs.readFileSync(asciiPath, "utf-8");
-} catch {
-  asciiPortrait = "";
-}
-
-const hasAsciiPortrait = asciiPortrait.trim().length > 0;
+const hasAsciiPortrait = asciiPortrait && asciiPortrait.trim().length > 0;
 
 const copy = {
   fr: {
