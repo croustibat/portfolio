@@ -42,7 +42,7 @@ const externalLinks = (p.links ?? []).filter((link) => link.href.startsWith("htt
       <div>
         <div class="inline-flex items-center gap-2 rounded-full border border-zinc-200 bg-zinc-50 px-3 py-1 text-xs text-zinc-700">
           <span class="h-1.5 w-1.5 rounded-full bg-[rgb(var(--accent))]"></span>
-          {p.type} · {p.status}
+          {p.type}{p.year ? ` · ${p.year}` : ""} · {p.status}
         </div>
 
         <h1 id="case-title" class="mt-4 text-3xl font-semibold tracking-tight md:text-5xl md:leading-[1.1]">
