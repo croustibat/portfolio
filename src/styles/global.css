@@ -45,6 +45,17 @@
   }
 }
 
+/* ASCII hover effect */
+.ascii-hover {
+  transition: color 0.4s cubic-bezier(0.22, 1, 0.36, 1),
+              text-shadow 0.4s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.group:hover .ascii-hover {
+  color: rgb(var(--accent));
+  text-shadow: 0 0 20px rgb(var(--accent) / 0.3);
+}
+
 /* ========================================
    SCROLL ANIMATIONS
    ======================================== */

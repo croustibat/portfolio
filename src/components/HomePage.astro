@@ -22,8 +22,8 @@ const copy = {
     currentlyBuilding: "En ce moment :",
     currentProject: "Paperboy",
     currentStatus: "MVP",
-    heroTitle: "Je construis des produits & outils —",
-    heroSubtitle: "de l'idée au produit livré.",
+    heroTitle: "Je fabrique des produits —",
+    heroSubtitle: "de l'idée au déploiement.",
     heroDescription:
       "CTO / Product Engineer. TALL stack (Laravel, Livewire, Tailwind, Alpine). Mainteneur open source. Je construis aussi des expériences macOS/iOS et des projets créatifs.",
     ctaWork: "Projets sélectionnés",
@@ -39,16 +39,19 @@ const copy = {
         label: "Filament Job Monitor",
         value: "224★",
         description: "Monitoring des jobs + UI pour Filament.",
+        href: "https://github.com/croustibat/filament-job-monitor",
       },
       {
         label: "Zed pour Laravel",
         value: "63★",
         description: "Intégration et outillage pour l'éditeur.",
+        href: "https://github.com/croustibat/zed-laravel",
       },
       {
         label: "Expériences macOS",
         value: "NotchHub",
         description: "Hub de notifications pour le notch + autres idées.",
+        href: "https://github.com/croustibat",
       },
     ],
     contactTitle: "Construisons quelque chose d'utile.",
@@ -79,16 +82,19 @@ const copy = {
         label: "Filament Job Monitor",
         value: "224★",
         description: "Jobs monitoring + UI for Filament.",
+        href: "https://github.com/croustibat/filament-job-monitor",
       },
       {
         label: "Zed for Laravel",
         value: "63★",
         description: "Editor integration & tooling.",
+        href: "https://github.com/croustibat/zed-laravel",
       },
       {
         label: "macOS experiments",
         value: "NotchHub",
         description: "Notification hub for the Mac notch + more.",
+        href: "https://github.com/croustibat",
       },
     ],
     contactTitle: "Let’s build something useful.",
@@ -149,7 +155,7 @@ const t = copy[locale];
       <div class="relative aspect-[4/5] w-full">
         {hasAsciiPortrait ? (
           <pre
-            class="ascii-portrait absolute inset-0 overflow-hidden bg-white px-4 py-3 font-mono text-[6px] leading-[6px] text-zinc-500 md:text-[7px] md:leading-[7px]"
+            class="ascii-portrait ascii-hover absolute inset-0 flex items-center justify-center overflow-hidden bg-white font-mono text-[5px] leading-[5px] text-zinc-500 sm:text-[6px] sm:leading-[6px] md:text-[8px] md:leading-[8px] lg:text-[9px] lg:leading-[9px]"
             role="img"
             aria-label={t.portraitAlt}
           >
@@ -194,11 +200,19 @@ const t = copy[locale];
 
   <div class="mt-6 grid gap-4 md:grid-cols-3">
     {t.ossCards.map((card, index) => (
-      <div class={`animate-on-scroll stagger-${index + 1} card-glow group rounded-3xl border border-zinc-200 bg-white p-6 shadow-sm transition hover:-translate-y-0.5 hover:border-zinc-300 hover:shadow-md`}>
+      <a
+        href={card.href}
+        target="_blank"
+        rel="noreferrer"
+        class={`animate-on-scroll stagger-${index + 1} card-glow group block rounded-3xl border border-zinc-200 bg-white p-6 shadow-sm transition hover:-translate-y-0.5 hover:border-zinc-300 hover:shadow-md focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[rgb(var(--accent))]`}
+      >
         <p class="text-sm text-zinc-600 transition group-hover:text-[rgb(var(--accent))]">{card.label}</p>
         <p class="mt-2 text-3xl font-semibold">{card.value}</p>
         <p class="mt-2 text-sm text-zinc-500">{card.description}</p>
-      </div>
+        <span class="mt-4 inline-flex items-center gap-1.5 text-sm font-medium text-zinc-400 transition group-hover:text-[rgb(var(--accent))]">
+          GitHub <span class="arrow-bounce">→</span>
+        </span>
+      </a>
     ))}
   </div>
 </section>
