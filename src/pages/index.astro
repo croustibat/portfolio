@@ -1,3 +1,15 @@
 ---
-return Astro.redirect("/fr");
+// Redirect handled by vercel.json, this is a fallback
 ---
+<!doctype html>
+<html lang="fr">
+  <head>
+    <meta charset="utf-8" />
+    <meta http-equiv="refresh" content="0;url=/fr" />
+    <link rel="canonical" href="/fr" />
+    <title>Redirecting...</title>
+  </head>
+  <body>
+    <p>Redirecting to <a href="/fr">/fr</a>...</p>
+  </body>
+</html>
