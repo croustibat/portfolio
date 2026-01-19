@@ -4,6 +4,89 @@
   --accent: 124 58 237; /* violet ultraviolettes */
 }
 
+/* ========================================
+   VIEW TRANSITIONS
+   ======================================== */
+
+/* Transition duration and easing */
+::view-transition-group(*),
+::view-transition-old(*),
+::view-transition-new(*) {
+  animation-duration: 0.35s;
+  animation-timing-function: cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+/* Forward navigation: fade and slight slide up */
+@keyframes fade-in {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes fade-out {
+  from {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  to {
+    opacity: 0;
+    transform: translateY(-8px);
+  }
+}
+
+::view-transition-old(root) {
+  animation: fade-out 0.3s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+::view-transition-new(root) {
+  animation: fade-in 0.3s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+/* Back navigation: reverse direction */
+@keyframes slide-from-left {
+  from {
+    opacity: 0;
+    transform: translateX(-16px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes slide-to-right {
+  from {
+    opacity: 1;
+    transform: translateX(0);
+  }
+  to {
+    opacity: 0;
+    transform: translateX(16px);
+  }
+}
+
+.back-transition::view-transition-old(root) {
+  animation: slide-to-right 0.3s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.back-transition::view-transition-new(root) {
+  animation: slide-from-left 0.3s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+/* Respect reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  ::view-transition-group(*),
+  ::view-transition-old(*),
+  ::view-transition-new(*) {
+    animation: none !important;
+  }
+}
+
 .ascii-portrait {
   position: relative;
   animation: ascii-flicker 6s ease-in-out infinite;
