@@ -10,8 +10,6 @@ const t =
     ? {
         back: "Retour aux projets",
         highlights: "Points clés",
-        snapshot:
-          "Cette étude de cas est un snapshot. On peut l'enrichir avec des captures, des métriques et des notes techniques.",
         links: "Liens",
         home: "Accueil",
         contact: "Contact",
@@ -19,8 +17,6 @@ const t =
     : {
         back: "Back to work",
         highlights: "Highlights",
-        snapshot:
-          "This case study is a short snapshot. We can expand it with screenshots, metrics, and deeper technical notes.",
         links: "Links",
         home: "Home",
         contact: "Contact",
@@ -79,10 +75,6 @@ const externalLinks = (p.links ?? []).filter((link) => link.href.startsWith("htt
             </li>
           ))}
         </ul>
-
-        <div class="mt-10 rounded-3xl border border-zinc-200 bg-zinc-50 p-6">
-          <p class="text-sm text-zinc-600">{t.snapshot}</p>
-        </div>
       </div>
 
       <aside class="md:col-span-5">

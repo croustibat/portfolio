@@ -28,6 +28,7 @@ export const projects: Project[] = [
       en: "Content curation and newsletter distribution platform for agencies and creators.",
     },
     tags: ["Laravel 12", "Livewire 3", "Tailwind CSS", "SQLite", "Product"],
+    cover: "/images/projects/paperboy.png",
     links: [
       { label: { fr: "Voir le projet", en: "View project" }, href: "https://paperboy.app" },
     ],
@@ -62,6 +63,7 @@ export const projects: Project[] = [
       en: "AI-powered CAD file generation SaaS — describe your part, get a STEP file in 2 minutes.",
     },
     tags: ["Laravel 12", "Filament 4", "Stripe", "Three.js", "AI/CAD"],
+    cover: "/images/projects/tolery.png",
     links: [
       { label: { fr: "Visiter Tolery", en: "Visit Tolery" }, href: "https://tolery.io" },
     ],
@@ -96,8 +98,9 @@ export const projects: Project[] = [
       en: "Laravel package to monitor background jobs — works with all drivers, lightweight Horizon alternative.",
     },
     tags: ["Laravel", "Filament", "Open-source", "Package", "DX"],
+    cover: "/images/projects/filament-jobs-monitor-1.png",
     links: [
-      { label: { fr: "GitHub", en: "GitHub" }, href: "https://github.com/croustibat/filament-jobs-monitor" },
+      { label: { fr: "GitHub", en: "GitHub" }, href: "https://github.com/ultraviolettes/filament-jobs-monitor" },
       { label: { fr: "Packagist", en: "Packagist" }, href: "https://packagist.org/packages/croustibat/filament-jobs-monitor" },
     ],
     highlights: {
@@ -131,6 +134,7 @@ export const projects: Project[] = [
       en: "Creation and management of an R&D unit in Berlin — music recommendation, academic and industry partnerships.",
     },
     tags: ["R&D", "Data", "C/C++", "Partenariats", "Recrutement"],
+    cover: "/images/projects/deezer.jpeg",
     highlights: {
       fr: [
         "Création de la cellule R&D Deezer à Berlin",
@@ -162,6 +166,7 @@ export const projects: Project[] = [
       en: "Co-founder and CTO of a digital agency — from 0 to 25 employees, then company sale.",
     },
     tags: ["Entrepreneuriat", "Leadership", "CTO", "Agency", "Exit"],
+    cover: "/images/projects/matierenoire.png",
     highlights: {
       fr: [
         "5 ans de croissance : de la création à la cession",
@@ -193,6 +198,7 @@ export const projects: Project[] = [
       en: "macOS utility that transforms the notch into a unified notification and system status hub.",
     },
     tags: ["Swift", "SwiftUI", "macOS", "Indie", "UX"],
+    cover: "/images/projects/notchhub.png",
     links: [
       { label: { fr: "GitHub", en: "GitHub" }, href: "https://github.com/croustibat/notchhub" },
     ],
