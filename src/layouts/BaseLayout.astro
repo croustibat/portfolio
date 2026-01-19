@@ -30,6 +30,7 @@ const nav =
     ? {
         work: "Projets",
         oss: "Open source",
+        music: "Musique",
         contact: "Contact",
         download: "Télécharger PDF",
         switchLabel: "EN",
@@ -38,6 +39,7 @@ const nav =
     : {
         work: "Work",
         oss: "Open-source",
+        music: "Music",
         contact: "Contact",
         download: "Download PDF",
         switchLabel: "FR",
@@ -89,6 +91,7 @@ const switchHref = currentLocale === "fr" ? enPath : frPath;
         <div class="flex items-center gap-3 text-sm">
           <a href={`${basePath}#work`} class="link-underline text-zinc-600 transition hover:text-zinc-900 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[rgb(var(--accent))]">{nav.work}</a>
           <a href={`${basePath}#oss`} class="link-underline text-zinc-600 transition hover:text-zinc-900 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[rgb(var(--accent))]">{nav.oss}</a>
+          <a href={`${basePath}/music`} class="link-underline text-zinc-600 transition hover:text-zinc-900 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[rgb(var(--accent))]">{nav.music}</a>
           <a href={`${basePath}#contact`} class="link-underline text-zinc-600 transition hover:text-zinc-900 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[rgb(var(--accent))]">{nav.contact}</a>
           <a
             href={switchHref}

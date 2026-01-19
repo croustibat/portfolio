@@ -1,0 +1,97 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import MusicCard from "../../components/MusicCard.astro";
+import PlatformButtons from "../../components/PlatformButtons.astro";
+import { musicProjects, musicLinks } from "../../data/music";
+
+const locale = "fr";
+const basePath = "/fr";
+
+const mainProjects = musicProjects.filter((p) => p.slug !== "experimentations");
+const experimentations = musicProjects.find((p) => p.slug === "experimentations");
+---
+
+<BaseLayout
+  title="Création musicale — Baptiste Bouillot"
+  description="Musicien depuis 30 ans. Post-punk, rock, metal, expérimentations électroniques. Même approche que le code : itération, rigueur, énergie."
+  locale={locale}
+>
+  {/* HERO */}
+  <section class="pb-10 pt-6" aria-labelledby="music-title">
+    <a
+      href={basePath}
+      class="text-sm text-zinc-600 transition hover:text-zinc-900 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[rgb(var(--accent))]"
+    >
+      ← Retour
+    </a>
+
+    <div class="mt-6">
+      <h1 id="music-title" class="animate-on-scroll text-3xl font-semibold tracking-tight md:text-5xl">
+        Création musicale
+      </h1>
+      <p class="animate-on-scroll stagger-1 mt-4 max-w-2xl text-base leading-relaxed text-zinc-600 md:text-lg">
+        Musicien depuis ~30 ans. Guitare, composition, production. Post-punk, rock, metal, électronique.
+        Même approche que le code : itération, rigueur, énergie. La musique m'a appris la discipline du craft.
+      </p>
+    </div>
+  </section>
+
+  {/* PLATFORMS */}
+  <section class="pb-10" aria-labelledby="platforms-title">
+    <div class="animate-on-scroll stagger-2">
+      <h2 id="platforms-title" class="text-lg font-semibold tracking-tight">Écouter / Regarder</h2>
+      <p class="mt-2 text-sm text-zinc-600">Retrouvez mes projets sur les plateformes.</p>
+    </div>
+
+    <div class="animate-on-scroll stagger-3 mt-4">
+      <PlatformButtons links={musicLinks} locale={locale} />
+    </div>
+  </section>
+
+  {/* MAIN PROJECTS */}
+  <section class="py-10" aria-labelledby="projects-title">
+    <div class="animate-on-scroll">
+      <h2 id="projects-title" class="text-2xl font-semibold tracking-tight">Projets publiés</h2>
+      <p class="mt-2 text-zinc-600">Groupes et projets principaux.</p>
+    </div>
+
+    <div class="mt-8 grid gap-6 md:grid-cols-2">
+      {mainProjects.map((project, index) => (
+        <MusicCard project={project} locale={locale} index={index} />
+      ))}
+    </div>
+  </section>
+
+  {/* EXPERIMENTATIONS */}
+  {experimentations && (
+    <section class="py-10" aria-labelledby="experiments-title">
+      <div class="animate-on-scroll">
+        <h2 id="experiments-title" class="text-2xl font-semibold tracking-tight">Expérimentations</h2>
+        <p class="mt-2 text-zinc-600">Sketches, ambient, sound design — un terrain de jeu personnel.</p>
+      </div>
+
+      <div class="mt-8 max-w-xl">
+        <MusicCard project={experimentations} locale={locale} index={0} />
+      </div>
+    </section>
+  )}
+
+  {/* BACK TO HOME */}
+  <section class="py-14">
+    <div class="animate-scale rounded-3xl border border-zinc-200 bg-white p-8 shadow-sm">
+      <h2 class="text-xl font-semibold tracking-tight">La musique façonne le craft.</h2>
+      <p class="mt-2 text-zinc-600">
+        30 ans de pratique m'ont appris la rigueur, l'écoute, et l'importance de l'itération.
+        Ces principes guident mon travail de product engineer.
+      </p>
+      <div class="mt-6">
+        <a
+          href={basePath}
+          class="btn-shine rounded-full bg-zinc-900 px-5 py-2.5 text-sm font-medium text-white shadow transition hover:-translate-y-0.5 hover:bg-zinc-800 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[rgb(var(--accent))]"
+        >
+          Voir mes projets tech
+        </a>
+      </div>
+    </div>
+  </section>
+</BaseLayout>
