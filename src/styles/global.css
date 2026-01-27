@@ -2,6 +2,8 @@
 
 :root{
   --accent: 124 58 237; /* violet ultraviolettes */
+  --accent-secondary: 236 72 153; /* pink */
+  --accent-tertiary: 59 130 246; /* blue */
 }
 
 /* ========================================
@@ -87,56 +89,210 @@
   }
 }
 
+/* ========================================
+   ASCII ART ANIMATIONS (Creative/Artistic)
+   ======================================== */
+
 .ascii-portrait {
   position: relative;
-  animation: ascii-flicker 6s ease-in-out infinite;
+  animation: ascii-breathe 4s ease-in-out infinite;
 }
 
+/* Scanline overlay */
+.ascii-portrait::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: repeating-linear-gradient(
+    0deg,
+    transparent,
+    transparent 2px,
+    rgba(124, 58, 237, 0.03) 2px,
+    rgba(124, 58, 237, 0.03) 4px
+  );
+  z-index: 1;
+}
+
+/* Moving gradient overlay */
 .ascii-portrait::after {
   content: "";
   position: absolute;
   inset: 0;
   pointer-events: none;
   background: linear-gradient(
-    to bottom,
-    rgba(124, 58, 237, 0.08),
-    rgba(255, 255, 255, 0) 40%,
-    rgba(124, 58, 237, 0.06)
+    135deg,
+    rgba(124, 58, 237, 0.15) 0%,
+    transparent 30%,
+    transparent 70%,
+    rgba(236, 72, 153, 0.1) 100%
   );
-  opacity: 0.5;
-  animation: ascii-scan 8s linear infinite;
+  opacity: 0;
+  animation: ascii-gradient-sweep 6s ease-in-out infinite;
+  z-index: 2;
 }
 
-@keyframes ascii-flicker {
-  0% {
-    opacity: 0.94;
+/* Breathing animation - subtle scale */
+@keyframes ascii-breathe {
+  0%, 100% {
+    transform: scale(1);
+    filter: blur(0px);
   }
-  45% {
+  50% {
+    transform: scale(1.002);
+    filter: blur(0.2px);
+  }
+}
+
+/* Gradient sweep */
+@keyframes ascii-gradient-sweep {
+  0%, 100% {
+    opacity: 0;
+    transform: translateX(-100%) translateY(-100%);
+  }
+  50% {
+    opacity: 1;
+    transform: translateX(100%) translateY(100%);
+  }
+}
+
+/* Character wave animation */
+.ascii-wave {
+  display: inline-block;
+  animation: ascii-char-wave 3s ease-in-out infinite;
+  animation-delay: calc(var(--char-index, 0) * 0.02s);
+}
+
+@keyframes ascii-char-wave {
+  0%, 100% {
+    transform: translateY(0);
+    opacity: 0.85;
+  }
+  50% {
+    transform: translateY(-1px);
     opacity: 1;
   }
-  100% {
-    opacity: 0.96;
-  }
 }
 
-@keyframes ascii-scan {
-  0% {
-    transform: translateY(-8%);
-  }
-  100% {
-    transform: translateY(8%);
-  }
-}
-
-/* ASCII hover effect */
+/* Glitch effect on hover */
 .ascii-hover {
-  transition: color 0.4s cubic-bezier(0.22, 1, 0.36, 1),
-              text-shadow 0.4s cubic-bezier(0.22, 1, 0.36, 1);
+  transition: all 0.3s cubic-bezier(0.22, 1, 0.36, 1);
 }
 
 .group:hover .ascii-hover {
+  animation: ascii-glitch 0.3s ease-in-out;
   color: rgb(var(--accent));
-  text-shadow: 0 0 20px rgb(var(--accent) / 0.3);
+  text-shadow:
+    0 0 30px rgb(var(--accent) / 0.4),
+    2px 0 rgb(var(--accent-secondary) / 0.3),
+    -2px 0 rgb(var(--accent-tertiary) / 0.3);
+}
+
+@keyframes ascii-glitch {
+  0%, 100% {
+    transform: translate(0);
+    filter: none;
+  }
+  20% {
+    transform: translate(-2px, 1px);
+    filter: hue-rotate(90deg);
+  }
+  40% {
+    transform: translate(2px, -1px);
+    filter: hue-rotate(-90deg);
+  }
+  60% {
+    transform: translate(-1px, -1px);
+  }
+  80% {
+    transform: translate(1px, 1px);
+  }
+}
+
+/* Continuous subtle drift */
+.ascii-drift {
+  animation: ascii-drift 20s ease-in-out infinite;
+}
+
+@keyframes ascii-drift {
+  0%, 100% {
+    transform: translate(0, 0) rotate(0deg);
+  }
+  25% {
+    transform: translate(2px, -1px) rotate(0.2deg);
+  }
+  50% {
+    transform: translate(-1px, 2px) rotate(-0.1deg);
+  }
+  75% {
+    transform: translate(-2px, -1px) rotate(0.1deg);
+  }
+}
+
+/* Noise texture overlay for artistic effect */
+.ascii-noise::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
+  opacity: 0.02;
+  pointer-events: none;
+  mix-blend-mode: overlay;
+  animation: noise-shift 0.5s steps(10) infinite;
+}
+
+@keyframes noise-shift {
+  0%, 100% { transform: translate(0, 0); }
+  10% { transform: translate(-1%, -1%); }
+  20% { transform: translate(1%, 1%); }
+  30% { transform: translate(-1%, 1%); }
+  40% { transform: translate(1%, -1%); }
+  50% { transform: translate(-1%, 0); }
+  60% { transform: translate(1%, 0); }
+  70% { transform: translate(0, 1%); }
+  80% { transform: translate(0, -1%); }
+  90% { transform: translate(1%, 1%); }
+}
+
+/* Color shifting effect for ASCII */
+.ascii-color-shift {
+  animation: color-cycle 8s ease-in-out infinite;
+}
+
+@keyframes color-cycle {
+  0%, 100% {
+    filter: hue-rotate(0deg);
+  }
+  33% {
+    filter: hue-rotate(15deg);
+  }
+  66% {
+    filter: hue-rotate(-15deg);
+  }
+}
+
+/* Floating particles effect */
+.ascii-particles::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background-image:
+    radial-gradient(circle at 20% 30%, rgb(var(--accent) / 0.15) 1px, transparent 1px),
+    radial-gradient(circle at 80% 70%, rgb(var(--accent-secondary) / 0.1) 1px, transparent 1px),
+    radial-gradient(circle at 50% 50%, rgb(var(--accent-tertiary) / 0.08) 1px, transparent 1px);
+  background-size: 60px 60px, 80px 80px, 100px 100px;
+  animation: particles-float 15s linear infinite;
+  pointer-events: none;
+  opacity: 0.6;
+}
+
+@keyframes particles-float {
+  0% {
+    transform: translate(0, 0);
+  }
+  100% {
+    transform: translate(-60px, -60px);
+  }
 }
 
 /* ========================================
