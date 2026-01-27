@@ -4,8 +4,10 @@
   "version": "0.0.1",
   "scripts": {
     "dev": "astro dev",
+    "dev:lab": "npm run build:lab && astro dev",
     "generate:ascii": "node scripts/generate-ascii.mjs",
-    "prebuild": "npm run generate:ascii",
+    "build:lab": "cd lab && npm install && npm run build",
+    "prebuild": "npm run generate:ascii && npm run build:lab",
     "build": "astro build",
     "preview": "astro preview",
     "astro": "astro"
