@@ -85,6 +85,41 @@ export const projects: Project[] = [
     },
   },
   {
+    slug: "pennywize",
+    name: {
+      fr: "Pennywize",
+      en: "Pennywize",
+    },
+    type: "SaaS",
+    status: "Live",
+    year: "2025",
+    oneLiner: {
+      fr: "Copilote financier IA pour freelances — décrivez votre situation, obtenez un budget clair sans formulaire.",
+      en: "AI financial copilot for freelancers — describe your situation, get a clear budget without any forms.",
+    },
+    tags: ["Laravel 12", "Livewire 3", "OpenAI", "Tailwind CSS", "Product"],
+    cover: "/images/projects/pennywize.png",
+    links: [
+      { label: { fr: "Voir le projet", en: "View project" }, href: "https://askpennywize.com" },
+    ],
+    highlights: {
+      fr: [
+        "Interface conversationnelle IA — décrivez vos finances comme à un ami",
+        "Calendrier budgétaire quotidien avec code couleur (vert/orange/rouge)",
+        "Réponses instantanées : « Est-ce que je peux me permettre ce resto ce soir ? »",
+        "Import CSV et saisie rapide en plus du chat",
+        "Données chiffrées, hébergées en France, conformité RGPD",
+      ],
+      en: [
+        "Conversational AI interface — describe your finances like talking to a friend",
+        "Daily budget calendar with color coding (green/orange/red)",
+        "Instant answers: 'Can I afford that restaurant tonight?'",
+        "CSV import and quick input alongside chat",
+        "Encrypted data, hosted in France, GDPR compliant",
+      ],
+    },
+  },
+  {
     slug: "filament-job-monitor",
     name: {
       fr: "Filament Jobs Monitor",
