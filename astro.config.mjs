@@ -6,6 +6,7 @@ import tailwindcss from '@tailwindcss/vite';
 // https://astro.build/config
 export default defineConfig({
   site: "https://baptiste.ultraviolettes.fr",
+  trailingSlash: 'ignore',
   vite: {
     plugins: [tailwindcss()]
   }

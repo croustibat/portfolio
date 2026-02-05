@@ -134,9 +134,9 @@ const t = copy[locale];
 
         {/* Floating availability badge */}
         <div class="absolute -bottom-4 -right-4 z-10 md:-right-6">
-          <div class="flex items-center gap-2 rounded-full border border-zinc-200 bg-white px-4 py-2 shadow-lg">
+          <div class="flex items-center gap-2 rounded-full border border-[rgb(var(--border))] bg-[rgb(var(--bg-secondary))] px-4 py-2 shadow-lg">
             <span class="pulse-dot h-2 w-2 rounded-full bg-emerald-500"></span>
-            <span class="text-xs font-medium text-zinc-700">{locale === 'fr' ? 'Disponible' : 'Available'}</span>
+            <span class="text-xs font-medium text-[rgb(var(--text-secondary))]">{locale === 'fr' ? 'Disponible' : 'Available'}</span>
           </div>
         </div>
       </div>
@@ -152,7 +152,7 @@ const t = copy[locale];
       </div>
 
       <h1 id="hero-title" class="animate-on-scroll stagger-1">
-        <span class="block text-5xl font-bold tracking-tight text-zinc-900 md:text-7xl md:leading-[0.95]">
+        <span class="block text-5xl font-bold tracking-tight text-[rgb(var(--text-primary))] md:text-7xl md:leading-[0.95]">
           {t.heroTitle.replace('—', '')}
         </span>
         <span class="mt-2 block bg-gradient-to-r from-[rgb(var(--accent))] via-[rgb(var(--accent-secondary))] to-[rgb(var(--accent-tertiary))] bg-clip-text text-3xl font-light italic text-transparent md:text-5xl">
@@ -160,7 +160,7 @@ const t = copy[locale];
         </span>
       </h1>
 
-      <p class="animate-on-scroll stagger-2 mt-8 max-w-lg text-base leading-relaxed text-zinc-600 md:text-lg">
+      <p class="animate-on-scroll stagger-2 mt-8 max-w-lg text-base leading-relaxed text-[rgb(var(--text-secondary))] md:text-lg">
         {t.heroDescription}
       </p>
 
@@ -168,7 +168,7 @@ const t = copy[locale];
       <div class="animate-on-scroll stagger-3 mt-8 flex flex-wrap gap-3">
         {t.tags.map((tag, i) => (
           <span
-            class={`artistic-tag inline-block rounded-lg border border-zinc-200 bg-white/80 px-3 py-1.5 text-xs font-medium text-zinc-700 backdrop-blur-sm transition hover:border-[rgb(var(--accent)/0.5)] hover:text-[rgb(var(--accent))] ${i % 2 === 0 ? 'rotate-[-1deg]' : 'rotate-[1deg]'}`}
+            class={`artistic-tag inline-block rounded-lg border border-[rgb(var(--border))] bg-[rgb(var(--bg-secondary)/0.8)] px-3 py-1.5 text-xs font-medium text-[rgb(var(--text-secondary))] backdrop-blur-sm transition hover:border-[rgb(var(--accent)/0.5)] hover:text-[rgb(var(--accent))] ${i % 2 === 0 ? 'rotate-[-1deg]' : 'rotate-[1deg]'}`}
           >
             {tag}
           </span>
@@ -179,7 +179,7 @@ const t = copy[locale];
       <div class="animate-on-scroll stagger-4 mt-10 flex flex-wrap items-center gap-4">
         <a
           href={`${basePath}#work`}
-          class="group relative inline-flex items-center gap-2 overflow-hidden rounded-full bg-zinc-900 px-6 py-3 text-sm font-medium text-white transition-all hover:bg-zinc-800 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[rgb(var(--accent))]"
+          class="group relative inline-flex items-center gap-2 overflow-hidden rounded-full bg-[rgb(var(--text-primary))] px-6 py-3 text-sm font-medium text-[rgb(var(--bg-primary))] transition-all hover:opacity-90 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[rgb(var(--accent))]"
         >
           <span class="relative z-10">{t.ctaWork}</span>
           <span class="arrow-bounce relative z-10">→</span>
@@ -187,7 +187,7 @@ const t = copy[locale];
         </a>
         <a
           href={`${basePath}#contact`}
-          class="group inline-flex items-center gap-2 text-sm font-medium text-zinc-700 transition hover:text-[rgb(var(--accent))]"
+          class="group inline-flex items-center gap-2 text-sm font-medium text-[rgb(var(--text-secondary))] transition hover:text-[rgb(var(--accent))]"
         >
           {t.ctaContact}
           <span class="arrow-bounce">→</span>
@@ -201,13 +201,13 @@ const t = copy[locale];
 <section id="work" class="relative py-16" aria-labelledby="work-title">
   {/* Section divider - artistic line */}
   <div class="absolute left-0 right-0 top-0 flex items-center gap-4">
-    <div class="h-px flex-1 bg-gradient-to-r from-transparent via-zinc-300 to-transparent"></div>
+    <div class="h-px flex-1 bg-gradient-to-r from-transparent via-[rgb(var(--border))] to-transparent"></div>
   </div>
 
   <div class="animate-on-scroll">
     <span class="text-xs font-medium uppercase tracking-widest text-[rgb(var(--accent))]">01</span>
-    <h2 id="work-title" class="mt-2 text-3xl font-bold tracking-tight md:text-4xl">{t.workTitle}</h2>
-    <p class="mt-3 max-w-md text-zinc-600">{t.workDescription}</p>
+    <h2 id="work-title" class="mt-2 text-3xl font-bold tracking-tight text-[rgb(var(--text-primary))] md:text-4xl">{t.workTitle}</h2>
+    <p class="mt-3 max-w-md text-[rgb(var(--text-secondary))]">{t.workDescription}</p>
   </div>
 
   <div class="mt-10 grid gap-6 md:grid-cols-2">
@@ -218,13 +218,13 @@ const t = copy[locale];
 {/* OPEN SOURCE - Creative cards */}
 <section id="oss" class="relative py-16" aria-labelledby="oss-title">
   <div class="absolute left-0 right-0 top-0 flex items-center gap-4">
-    <div class="h-px flex-1 bg-gradient-to-r from-transparent via-zinc-300 to-transparent"></div>
+    <div class="h-px flex-1 bg-gradient-to-r from-transparent via-[rgb(var(--border))] to-transparent"></div>
   </div>
 
   <div class="animate-on-scroll">
     <span class="text-xs font-medium uppercase tracking-widest text-[rgb(var(--accent))]">02</span>
-    <h2 id="oss-title" class="mt-2 text-3xl font-bold tracking-tight md:text-4xl">{t.ossTitle}</h2>
-    <p class="mt-3 max-w-md text-zinc-600">{t.ossDescription}</p>
+    <h2 id="oss-title" class="mt-2 text-3xl font-bold tracking-tight text-[rgb(var(--text-primary))] md:text-4xl">{t.ossTitle}</h2>
+    <p class="mt-3 max-w-md text-[rgb(var(--text-secondary))]">{t.ossDescription}</p>
   </div>
 
   <div class="mt-10 grid gap-6 md:grid-cols-3">
@@ -233,16 +233,16 @@ const t = copy[locale];
         href={card.href}
         target="_blank"
         rel="noreferrer"
-        class={`animate-on-scroll stagger-${index + 1} group relative block overflow-hidden rounded-2xl border border-zinc-200/60 bg-white p-6 transition-all duration-300 hover:-translate-y-1 hover:border-[rgb(var(--accent)/0.3)] hover:shadow-xl hover:shadow-[rgb(var(--accent)/0.1)] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[rgb(var(--accent))]`}
+        class={`animate-on-scroll stagger-${index + 1} group relative block overflow-hidden rounded-2xl border border-[rgb(var(--border)/0.6)] bg-[rgb(var(--bg-secondary))] p-6 transition-all duration-300 hover:-translate-y-1 hover:border-[rgb(var(--accent)/0.3)] hover:shadow-xl hover:shadow-[rgb(var(--accent)/0.1)] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[rgb(var(--accent))]`}
       >
         {/* Hover gradient overlay */}
         <div class="absolute inset-0 bg-gradient-to-br from-[rgb(var(--accent)/0.03)] to-transparent opacity-0 transition-opacity group-hover:opacity-100"></div>
 
         <div class="relative">
-          <p class="text-sm font-medium text-zinc-500 transition group-hover:text-[rgb(var(--accent))]">{card.label}</p>
-          <p class="mt-3 text-4xl font-bold tracking-tight">{card.value}</p>
-          <p class="mt-3 text-sm leading-relaxed text-zinc-600">{card.description}</p>
-          <span class="mt-5 inline-flex items-center gap-2 text-sm font-medium text-zinc-400 transition group-hover:text-zinc-900">
+          <p class="text-sm font-medium text-[rgb(var(--text-secondary))] transition group-hover:text-[rgb(var(--accent))]">{card.label}</p>
+          <p class="mt-3 text-4xl font-bold tracking-tight text-[rgb(var(--text-primary))]">{card.value}</p>
+          <p class="mt-3 text-sm leading-relaxed text-[rgb(var(--text-secondary))]">{card.description}</p>
+          <span class="mt-5 inline-flex items-center gap-2 text-sm font-medium text-[rgb(var(--text-tertiary))] transition group-hover:text-[rgb(var(--text-primary))]">
             GitHub <span class="arrow-bounce">→</span>
           </span>
         </div>
@@ -254,29 +254,29 @@ const t = copy[locale];
 {/* MUSIC - Expressive section */}
 <section id="music" class="relative py-16" aria-labelledby="music-title">
   <div class="absolute left-0 right-0 top-0 flex items-center gap-4">
-    <div class="h-px flex-1 bg-gradient-to-r from-transparent via-zinc-300 to-transparent"></div>
+    <div class="h-px flex-1 bg-gradient-to-r from-transparent via-[rgb(var(--border))] to-transparent"></div>
   </div>
 
   <div class="animate-on-scroll">
     <span class="text-xs font-medium uppercase tracking-widest text-[rgb(var(--accent-secondary))]">03</span>
-    <h2 id="music-title" class="mt-2 text-3xl font-bold tracking-tight md:text-4xl">{t.musicTitle}</h2>
-    <p class="mt-3 max-w-md text-zinc-600">{t.musicDescription}</p>
+    <h2 id="music-title" class="mt-2 text-3xl font-bold tracking-tight text-[rgb(var(--text-primary))] md:text-4xl">{t.musicTitle}</h2>
+    <p class="mt-3 max-w-md text-[rgb(var(--text-secondary))]">{t.musicDescription}</p>
   </div>
 
   <div class="mt-10 grid gap-6 md:grid-cols-3">
     {highlightedMusic.map((project, index) => (
-      <div class={`animate-on-scroll stagger-${index + 1} group relative overflow-hidden rounded-2xl border border-zinc-200/60 bg-gradient-to-br from-white to-zinc-50/50 p-6 transition-all duration-300 hover:-translate-y-1 hover:border-[rgb(var(--accent-secondary)/0.3)] hover:shadow-xl hover:shadow-[rgb(var(--accent-secondary)/0.1)]`}>
+      <div class={`animate-on-scroll stagger-${index + 1} group relative overflow-hidden rounded-2xl border border-[rgb(var(--border)/0.6)] bg-gradient-to-br from-[rgb(var(--bg-secondary))] to-[rgb(var(--bg-tertiary)/0.5)] p-6 transition-all duration-300 hover:-translate-y-1 hover:border-[rgb(var(--accent-secondary)/0.3)] hover:shadow-xl hover:shadow-[rgb(var(--accent-secondary)/0.1)]`}>
         {/* Decorative music wave */}
         <div class="absolute -right-4 -top-4 h-24 w-24 rounded-full bg-gradient-to-br from-[rgb(var(--accent-secondary)/0.1)] to-transparent blur-2xl"></div>
 
         <div class="relative">
           <div class="flex items-center gap-2">
-            <span class="rounded-md bg-zinc-900 px-2 py-1 text-[10px] font-medium uppercase tracking-wider text-white">{project.genre}</span>
-            {project.years && <span class="text-xs text-zinc-400">{project.years}</span>}
+            <span class="rounded-md bg-[rgb(var(--text-primary))] px-2 py-1 text-[10px] font-medium uppercase tracking-wider text-[rgb(var(--bg-primary))]">{project.genre}</span>
+            {project.years && <span class="text-xs text-[rgb(var(--text-tertiary))]">{project.years}</span>}
           </div>
-          <h3 class="mt-4 text-xl font-bold tracking-tight">{project.name}</h3>
+          <h3 class="mt-4 text-xl font-bold tracking-tight text-[rgb(var(--text-primary))]">{project.name}</h3>
           {project.role && <p class="mt-1 text-xs font-medium text-[rgb(var(--accent-secondary))]">{project.role}</p>}
-          <p class="mt-3 text-sm leading-relaxed text-zinc-600">{pick(project.description, locale)}</p>
+          <p class="mt-3 text-sm leading-relaxed text-[rgb(var(--text-secondary))]">{pick(project.description, locale)}</p>
         </div>
       </div>
     ))}
@@ -285,7 +285,7 @@ const t = copy[locale];
   <div class="animate-on-scroll stagger-4 mt-8">
     <a
       href={`${basePath}/music`}
-      class="group inline-flex items-center gap-2 text-sm font-medium text-zinc-700 transition hover:text-[rgb(var(--accent-secondary))]"
+      class="group inline-flex items-center gap-2 text-sm font-medium text-[rgb(var(--text-secondary))] transition hover:text-[rgb(var(--accent-secondary))]"
     >
       {t.musicCta} <span class="arrow-bounce">→</span>
     </a>
@@ -295,7 +295,7 @@ const t = copy[locale];
 {/* CONTACT - Bold, artistic CTA */}
 <section id="contact" class="relative py-20" aria-labelledby="contact-title">
   <div class="absolute left-0 right-0 top-0 flex items-center gap-4">
-    <div class="h-px flex-1 bg-gradient-to-r from-transparent via-zinc-300 to-transparent"></div>
+    <div class="h-px flex-1 bg-gradient-to-r from-transparent via-[rgb(var(--border))] to-transparent"></div>
   </div>
 
   <div class="animate-scale relative overflow-hidden rounded-3xl bg-zinc-900 p-10 md:p-14">

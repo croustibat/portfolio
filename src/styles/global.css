@@ -1,5 +1,7 @@
 @import "tailwindcss";
 
+@custom-variant dark (&:where(.dark, .dark *));
+
 :root {
   --accent: 124 58 237; /* violet ultraviolettes */
   --accent-secondary: 236 72 153; /* pink */

@@ -1,0 +1,11 @@
+{
+  "mcpServers": {
+    "memory": {
+      "command": "node",
+      "args": [
+        "/Users/croustibat/Library/Application Support/Herd/config/nvm/versions/node/v24.11.0/lib/node_modules/claude-code-memory/dist/index.js",
+        "/Users/croustibat/Projects/PORTFOLIO/repositories/baptiste-portfolio"
+      ]
+    }
+  }
+}

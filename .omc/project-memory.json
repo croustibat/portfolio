@@ -1,0 +1,180 @@
+{
+  "version": "1.0.0",
+  "lastScanned": 1770289549672,
+  "projectRoot": "/Users/croustibat/Projects/PORTFOLIO/repositories/baptiste-portfolio",
+  "techStack": {
+    "languages": [
+      {
+        "name": "JavaScript/TypeScript",
+        "version": null,
+        "confidence": "high",
+        "markers": [
+          "package.json"
+        ]
+      },
+      {
+        "name": "TypeScript",
+        "version": null,
+        "confidence": "high",
+        "markers": [
+          "tsconfig.json"
+        ]
+      }
+    ],
+    "frameworks": [
+      {
+        "name": "astro",
+        "version": "5.16.9",
+        "category": "fullstack"
+      }
+    ],
+    "packageManager": "npm",
+    "runtime": null
+  },
+  "build": {
+    "buildCommand": "npm run build",
+    "testCommand": null,
+    "lintCommand": null,
+    "devCommand": "npm run dev",
+    "scripts": {
+      "dev": "astro dev",
+      "dev:lab": "npm run build:lab && astro dev",
+      "generate:ascii": "node scripts/generate-ascii.mjs",
+      "build:lab": "[ -d lab ] && cd lab && npm install && npm run build || true",
+      "prebuild": "npm run generate:ascii && npm run build:lab",
+      "build": "astro build",
+      "preview": "astro preview",
+      "astro": "astro"
+    }
+  },
+  "conventions": {
+    "namingStyle": null,
+    "importStyle": null,
+    "testPattern": null,
+    "fileOrganization": "type-based"
+  },
+  "structure": {
+    "isMonorepo": false,
+    "workspaces": [],
+    "mainDirectories": [
+      "public",
+      "scripts",
+      "src"
+    ],
+    "gitBranches": null
+  },
+  "customNotes": [],
+  "directoryMap": {
+    "dist": {
+      "path": "dist",
+      "purpose": "Distribution/build output",
+      "fileCount": 2,
+      "lastAccessed": 1770289549645,
+      "keyFiles": [
+        "favicon.svg",
+        "index.html"
+      ]
+    },
+    "lab": {
+      "path": "lab",
+      "purpose": null,
+      "fileCount": 5,
+      "lastAccessed": 1770289549645,
+      "keyFiles": [
+        "index.html",
+        "package-lock.json",
+        "package.json",
+        "tsconfig.json",
+        "vite.config.ts"
+      ]
+    },
+    "public": {
+      "path": "public",
+      "purpose": "Public files",
+      "fileCount": 1,
+      "lastAccessed": 1770289549655,
+      "keyFiles": [
+        "favicon.svg"
+      ]
+    },
+    "scripts": {
+      "path": "scripts",
+      "purpose": "Build/utility scripts",
+      "fileCount": 1,
+      "lastAccessed": 1770289549655,
+      "keyFiles": [
+        "generate-ascii.mjs"
+      ]
+    },
+    "src": {
+      "path": "src",
+      "purpose": "Source code",
+      "fileCount": 1,
+      "lastAccessed": 1770289549655,
+      "keyFiles": [
+        "i18n.ts"
+      ]
+    },
+    "lab/node_modules": {
+      "path": "lab/node_modules",
+      "purpose": "Dependencies",
+      "fileCount": 1,
+      "lastAccessed": 1770289549656,
+      "keyFiles": []
+    },
+    "lab/src": {
+      "path": "lab/src",
+      "purpose": "Source code",
+      "fileCount": 7,
+      "lastAccessed": 1770289549656,
+      "keyFiles": [
+        "audio.ts",
+        "main.ts",
+        "scene.ts"
+      ]
+    },
+    "src/assets": {
+      "path": "src/assets",
+      "purpose": "Static assets",
+      "fileCount": 3,
+      "lastAccessed": 1770289549657,
+      "keyFiles": [
+        "astro.svg",
+        "background.svg",
+        "me.ascii.txt"
+      ]
+    },
+    "src/components": {
+      "path": "src/components",
+      "purpose": "UI components",
+      "fileCount": 6,
+      "lastAccessed": 1770289549657,
+      "keyFiles": [
+        "CaseStudyPage.astro",
+        "HomePage.astro",
+        "MusicCard.astro"
+      ]
+    },
+    "src/data": {
+      "path": "src/data",
+      "purpose": "Data files",
+      "fileCount": 2,
+      "lastAccessed": 1770289549657,
+      "keyFiles": [
+        "music.ts",
+        "projects.ts"
+      ]
+    },
+    "src/pages": {
+      "path": "src/pages",
+      "purpose": "Page components",
+      "fileCount": 1,
+      "lastAccessed": 1770289549657,
+      "keyFiles": [
+        "index.astro"
+      ]
+    }
+  },
+  "hotPaths": [],
+  "userDirectives": []
+}

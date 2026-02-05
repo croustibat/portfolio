@@ -12,30 +12,30 @@ const staggerClass = `stagger-${Math.min(index + 1, 6)}`;
 
 <a
   href={`/${locale}/work/${p.slug}`}
-  class={`animate-on-scroll ${staggerClass} card-glow spotlight-card group relative block overflow-hidden rounded-3xl border border-zinc-200 bg-white p-6 shadow-sm transition hover:-translate-y-0.5 hover:border-zinc-300 hover:shadow-md focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[rgb(var(--accent))]`}
+  class={`animate-on-scroll ${staggerClass} card-glow spotlight-card group relative block overflow-hidden rounded-3xl border border-[rgb(var(--border))] bg-[rgb(var(--bg-secondary))] p-6 shadow-sm transition hover:-translate-y-0.5 hover:border-[rgb(var(--text-tertiary))] hover:shadow-md focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[rgb(var(--accent))]`}
 >
   <div class="flex items-start justify-between gap-4">
     <div>
-      <div class="inline-flex items-center gap-2 text-xs text-zinc-500">
+      <div class="inline-flex items-center gap-2 text-xs text-[rgb(var(--text-secondary))]">
         <span class="pulse-dot h-1.5 w-1.5 rounded-full bg-[rgb(var(--accent))]"></span>
         <span>{p.type}{p.year ? ` · ${p.year}` : ""}</span>
       </div>
-      <h3 class="mt-3 text-lg font-semibold tracking-tight" transition:name={`project-${p.slug}-title`}>{pick(p.name, locale)}</h3>
-      <p class="mt-2 text-sm text-zinc-600">{pick(p.oneLiner, locale)}</p>
+      <h3 class="mt-3 text-lg font-semibold tracking-tight text-[rgb(var(--text-primary))]" transition:name={`project-${p.slug}-title`}>{pick(p.name, locale)}</h3>
+      <p class="mt-2 text-sm text-[rgb(var(--text-secondary))]">{pick(p.oneLiner, locale)}</p>
     </div>
 
-    <span class="shrink-0 whitespace-nowrap rounded-full border border-zinc-200 bg-zinc-50 px-3 py-1 text-xs text-zinc-600" transition:name={`project-${p.slug}-status`}>
+    <span class="shrink-0 whitespace-nowrap rounded-full border border-[rgb(var(--border))] bg-[rgb(var(--bg-tertiary))] px-3 py-1 text-xs text-[rgb(var(--text-secondary))]" transition:name={`project-${p.slug}-status`}>
       {p.status}
     </span>
   </div>
 
-  <div class="mt-5 flex flex-wrap gap-2 text-xs text-zinc-500">
+  <div class="mt-5 flex flex-wrap gap-2 text-xs text-[rgb(var(--text-secondary))]">
     {p.tags.slice(0, 4).map((t) => (
-      <span class="rounded-full border border-zinc-200 px-3 py-1">{t}</span>
+      <span class="rounded-full border border-[rgb(var(--border))] px-3 py-1">{t}</span>
     ))}
   </div>
 
-  <span class="mt-6 inline-flex items-center gap-2 text-sm font-medium text-zinc-900 transition group-hover:gap-2.5">
+  <span class="mt-6 inline-flex items-center gap-2 text-sm font-medium text-[rgb(var(--text-primary))] transition group-hover:gap-2.5">
     {viewLabel}
     <span class="arrow-bounce">→</span>
   </span>

@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="Baptiste Bouillot — Creative Developer & Product Engineer" />
+    <title>LAB — Baptiste Bouillot</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&display=swap" rel="stylesheet" />
+    <script type="module" crossorigin src="/lab/assets/index-BfOWMmVJ.js"></script>
+    <link rel="stylesheet" crossorigin href="/lab/assets/index-ksAFD5tg.css">
+  </head>
+  <body>
+    <canvas id="canvas"></canvas>
+
+    <div id="scroll-container">
+      <!-- Section 0: Intro -->
+      <section class="content-section" data-section="0">
+        <div class="section-content">
+          <span class="section-label-small" data-scramble data-scramble-fast data-text="BAPTISTE BOUILLOT">BAPTISTE BOUILLOT</span>
+          <h1 class="section-title" data-scramble data-text="Creative Developer">Creative Developer</h1>
+          <p class="section-desc" data-scramble data-text="Product Engineer · CTO · Musician">Product Engineer · CTO · Musician</p>
+        </div>
+      </section>
+
+      <!-- Section 1: About -->
+      <section class="content-section" data-section="1">
+        <div class="section-content">
+          <span class="section-label-small" data-scramble data-scramble-fast data-text="01 — ABOUT">01 — ABOUT</span>
+          <h2 class="section-title" data-scramble data-text="Builder">Builder</h2>
+          <p class="section-text" data-scramble data-text="15+ years crafting web apps, SaaS products, and open-source tools. From idea to deployment.">15+ years crafting web apps, SaaS products, and open-source tools. From idea to deployment.</p>
+        </div>
+      </section>
+
+      <!-- Section 2: Work -->
+      <section class="content-section" data-section="2">
+        <div class="section-content">
+          <span class="section-label-small" data-scramble data-scramble-fast data-text="02 — WORK">02 — WORK</span>
+          <h2 class="section-title" data-scramble data-text="Selected Projects">Selected Projects</h2>
+          <div class="project-list">
+            <a href="/fr" class="project-item" data-scramble data-text="Filament Job Monitor"><span class="project-name">Filament Job Monitor</span><span class="project-meta">224★</span></a>
+            <a href="/fr" class="project-item" data-scramble data-text="Zed for Laravel"><span class="project-name">Zed for Laravel</span><span class="project-meta">63★</span></a>
+            <a href="/fr" class="project-item" data-scramble data-text="NotchHub"><span class="project-name">NotchHub</span><span class="project-meta">macOS</span></a>
+          </div>
+        </div>
+      </section>
+
+      <!-- Section 3: Music -->
+      <section class="content-section" data-section="3">
+        <div class="section-content">
+          <span class="section-label-small" data-scramble data-scramble-fast data-text="03 — MUSIC">03 — MUSIC</span>
+          <h2 class="section-title" data-scramble data-text="Sound">Sound</h2>
+          <p class="section-text" data-scramble data-text="30 years of practice. Drums, production, electronic. Same approach as code: iteration, rigor, energy.">30 years of practice. Drums, production, electronic. Same approach as code: iteration, rigor, energy.</p>
+        </div>
+      </section>
+
+      <!-- Section 4: Contact -->
+      <section class="content-section" data-section="4">
+        <div class="section-content">
+          <span class="section-label-small" data-scramble data-scramble-fast data-text="04 — CONTACT">04 — CONTACT</span>
+          <h2 class="section-title" data-scramble data-text="Let's Build">Let's Build</h2>
+          <div class="contact-links">
+            <a href="mailto:hello@baptiste.ultraviolettes.fr" class="contact-link" data-scramble data-text="Email">Email</a>
+            <a href="https://github.com/croustibat" class="contact-link" data-scramble data-text="GitHub">GitHub</a>
+            <a href="/fr" class="contact-link" data-scramble data-text="Portfolio">Portfolio</a>
+          </div>
+        </div>
+      </section>
+    </div>
+
+    <div id="ui">
+      <div class="corner-brand">
+        <span class="brand-lab">LAB</span>
+      </div>
+
+      <div class="scroll-indicator">
+        <div class="scroll-line">
+          <div class="scroll-progress"></div>
+        </div>
+        <span class="scroll-hint">scroll</span>
+      </div>
+
+      <div class="section-counter">
+        <span class="section-current">00</span>
+        <span class="section-divider">/</span>
+        <span class="section-total">04</span>
+      </div>
+
+      <button id="sound-toggle" class="sound-btn" aria-label="Toggle sound">
+        <span class="sound-icon"></span>
+      </button>
+
+      <div class="mouse-hint">
+        <span>click to create · hover to explode</span>
+      </div>
+    </div>
+
+    <div id="overlay"></div>
+
+  </body>
+</html>
