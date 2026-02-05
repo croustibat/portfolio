@@ -4,13 +4,11 @@ import { projects } from "../data/projects";
 import { musicProjects } from "../data/music";
 import type { Locale } from "../i18n";
 import { pick } from "../i18n";
-import asciiPortrait from "../assets/me.ascii.txt?raw";
 
 const highlightedMusic = musicProjects.filter((p) => p.highlight).slice(0, 3);
 
 const { locale } = Astro.props as { locale: Locale };
 const basePath = locale === "fr" ? "/fr" : "/en";
-const hasAsciiPortrait = asciiPortrait && asciiPortrait.trim().length > 0;
 
 const copy = {
   fr: {
@@ -124,23 +122,13 @@ const t = copy[locale];
         <div class="absolute -inset-1 rounded-2xl bg-gradient-to-br from-[rgb(var(--accent))] via-[rgb(var(--accent-secondary)/0.5)] to-[rgb(var(--accent-tertiary))] opacity-20 blur-sm transition-all duration-500 group-hover:opacity-40 group-hover:blur-md"></div>
 
         <div class="relative overflow-hidden rounded-2xl border border-zinc-200/50 bg-zinc-900">
-          <div class="ascii-particles relative aspect-[4/5] w-full">
-            {hasAsciiPortrait ? (
-              <pre
-                class="ascii-portrait ascii-hover ascii-drift ascii-noise ascii-color-shift absolute inset-0 flex items-center justify-center overflow-hidden bg-zinc-900 font-mono text-[5px] leading-[5px] text-zinc-400 sm:text-[6px] sm:leading-[6px] md:text-[8px] md:leading-[8px] lg:text-[9px] lg:leading-[9px]"
-                role="img"
-                aria-label={t.portraitAlt}
-              >
-{asciiPortrait}
-              </pre>
-            ) : (
-              <img
-                src="/images/me.jpg"
-                alt={t.portraitAlt}
-                class="absolute inset-0 h-full w-full object-cover"
-                loading="lazy"
-              />
-            )}
+          <div class="relative aspect-[4/5] w-full">
+            <div
+              id="unicorn-scene"
+              class="absolute inset-0 h-full w-full"
+              role="img"
+              aria-label={t.portraitAlt}
+            ></div>
           </div>
         </div>
 
@@ -331,7 +319,7 @@ const t = copy[locale];
         </a>
         <a
           class="inline-flex items-center gap-2 rounded-full border border-zinc-700 px-6 py-3 font-medium text-zinc-300 transition hover:border-zinc-500 hover:text-white focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[rgb(var(--accent))]"
-          href="https://www.linkedin.com/"
+          href="https://www.linkedin.com/in/baptiste-ultraviolettes/"
           target="_blank"
           rel="noreferrer"
         >
@@ -349,3 +337,23 @@ const t = copy[locale];
     </div>
   </div>
 </section>
+
+<script>
+  // Load Unicorn Studio SDK and initialize the scene
+  const script = document.createElement('script');
+  script.src = 'https://cdn.jsdelivr.net/gh/hiunicornstudio/unicornstudio.js@v2.0.5/dist/unicornStudio.umd.js';
+  script.onload = () => {
+    if (window.UnicornStudio) {
+      window.UnicornStudio.addScene({
+        elementId: 'unicorn-scene',
+        projectId: 'eEETkeh1OyIjNhYi7kFi',
+        scale: 1,
+        dpi: 1.5,
+        fps: 60,
+        lazyLoad: true,
+        production: true,
+      });
+    }
+  };
+  document.head.appendChild(script);
+</script>
