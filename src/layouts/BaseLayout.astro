@@ -52,6 +52,15 @@ const switchHref = currentLocale === "fr" ? enPath : frPath;
 <!doctype html>
 <html lang={currentLocale} class="scroll-smooth">
   <head>
+    <script is:inline>
+      (function() {
+        const stored = localStorage.getItem('theme');
+        const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+        if (stored === 'dark' || (!stored && prefersDark)) {
+          document.documentElement.classList.add('dark');
+        }
+      })();
+    </script>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width,initial-scale=1" />
     <meta name="description" content={description} />
@@ -76,17 +85,6 @@ const switchHref = currentLocale === "fr" ? enPath : frPath;
 
     <!-- View Transitions -->
     <ViewTransitions />
-
-    <!-- Dark mode script (before render to prevent flash) -->
-    <script is:inline>
-      (function() {
-        const stored = localStorage.getItem('theme');
-        const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
-        if (stored === 'dark' || (!stored && prefersDark)) {
-          document.documentElement.classList.add('dark');
-        }
-      })();
-    </script>
   </head>
 
   <body class="bg-[rgb(var(--bg-primary))] text-[rgb(var(--text-primary))] transition-colors duration-300">
