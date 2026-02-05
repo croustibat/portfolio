@@ -1,0 +1,193 @@
+---
+import type { Locale } from "../i18n";
+import { pick } from "../i18n";
+import { careerTimeline } from "../data/career";
+
+const { locale } = Astro.props as { locale: Locale };
+
+const copy = {
+  fr: {
+    title: "Parcours",
+    subtitle: "15+ ans de craft",
+    scrollHint: "Scroll →",
+  },
+  en: {
+    title: "Journey",
+    subtitle: "15+ years of craft",
+    scrollHint: "Scroll →",
+  },
+};
+
+const t = copy[locale];
+
+// Group events by year for cleaner display
+const groupedByYear = careerTimeline.reduce((acc, event) => {
+  const year = event.year.split("-")[0]; // Handle ranges like "2016-2021"
+  if (!acc[year]) acc[year] = [];
+  acc[year].push(event);
+  return acc;
+}, {} as Record<string, typeof careerTimeline>);
+
+const years = Object.keys(groupedByYear).sort((a, b) => parseInt(b) - parseInt(a));
+---
+
+<section id="journey" class="relative py-16" aria-labelledby="journey-title">
+  <div class="absolute left-0 right-0 top-0 flex items-center gap-4">
+    <div class="h-px flex-1 bg-gradient-to-r from-transparent via-[rgb(var(--border))] to-transparent"></div>
+  </div>
+
+  <div class="animate-on-scroll mb-8">
+    <span class="text-xs font-medium uppercase tracking-widest text-[rgb(var(--accent-tertiary))]">00</span>
+    <h2 id="journey-title" class="mt-2 text-3xl font-bold tracking-tight text-[rgb(var(--text-primary))] md:text-4xl">{t.title}</h2>
+    <p class="mt-3 max-w-md text-[rgb(var(--text-secondary))]">{t.subtitle}</p>
+  </div>
+
+  <!-- Scroll hint -->
+  <div class="animate-on-scroll stagger-1 mb-4 flex items-center gap-2 text-sm text-[rgb(var(--text-tertiary))]">
+    <span>{t.scrollHint}</span>
+    <span class="arrow-bounce">→</span>
+  </div>
+
+  <!-- Timeline container -->
+  <div class="timeline-container relative -mx-6 overflow-x-auto overflow-y-hidden px-6 pb-8" style="scrollbar-width: none; -ms-overflow-style: none;">
+    <div class="timeline-track flex gap-0" style="width: max-content;">
+      {years.map((year, index) => (
+        <div
+          class="timeline-item group relative flex-shrink-0"
+          style={`--index: ${index};`}
+          data-year={year}
+        >
+          <!-- Giant year typography -->
+          <div class="year-container relative flex h-[280px] w-[320px] flex-col items-start justify-end overflow-hidden px-6 md:h-[360px] md:w-[400px]">
+            <!-- Year number - massive typography -->
+            <span
+              class="year-text pointer-events-none absolute -top-8 left-0 select-none font-bold leading-none text-[rgb(var(--text-primary)/0.04)] transition-all duration-700 ease-out group-hover:text-[rgb(var(--accent)/0.08)]"
+              style="font-size: clamp(180px, 25vw, 280px);"
+            >
+              {year}
+            </span>
+
+            <!-- Content cards -->
+            <div class="relative z-10 w-full space-y-3">
+              {groupedByYear[year].map((event, eventIndex) => (
+                <div
+                  class="card-reveal translate-y-4 opacity-0 transition-all duration-500 ease-out"
+                  style={`transition-delay: ${eventIndex * 100}ms;`}
+                >
+                  <div class="rounded-xl border border-[rgb(var(--border)/0.5)] bg-[rgb(var(--bg-secondary)/0.8)] p-4 backdrop-blur-sm transition-all duration-300 hover:border-[rgb(var(--accent)/0.3)] hover:shadow-lg hover:shadow-[rgb(var(--accent)/0.05)]">
+                    <!-- Type badge -->
+                    <div class="mb-2 flex items-center gap-2">
+                      <span class={`inline-flex h-2 w-2 rounded-full ${
+                        event.type === 'job' ? 'bg-[rgb(var(--accent))]' :
+                        event.type === 'project' ? 'bg-[rgb(var(--accent-secondary))]' :
+                        event.type === 'milestone' ? 'bg-emerald-500' :
+                        'bg-[rgb(var(--accent-tertiary))]'
+                      }`}></span>
+                      {event.company && (
+                        <span class="text-xs font-medium text-[rgb(var(--text-tertiary))]">{event.company}</span>
+                      )}
+                    </div>
+
+                    <!-- Title -->
+                    <h3 class="text-base font-semibold text-[rgb(var(--text-primary))]">
+                      {pick(event.title, locale)}
+                    </h3>
+
+                    <!-- Description -->
+                    <p class="mt-1 text-sm text-[rgb(var(--text-secondary))]">
+                      {pick(event.description, locale)}
+                    </p>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+
+          <!-- Timeline line -->
+          <div class="absolute bottom-0 left-0 right-0 h-px bg-gradient-to-r from-[rgb(var(--border))] to-transparent"></div>
+
+          <!-- Year marker dot -->
+          <div class="absolute -bottom-2 left-6 flex flex-col items-center">
+            <div class="h-4 w-4 rounded-full border-2 border-[rgb(var(--bg-primary))] bg-[rgb(var(--accent))] shadow-lg shadow-[rgb(var(--accent)/0.3)] transition-transform duration-300 group-hover:scale-125"></div>
+            <span class="mt-2 text-sm font-bold text-[rgb(var(--text-primary))]">{year}</span>
+          </div>
+        </div>
+      ))}
+
+      <!-- End spacer -->
+      <div class="w-24 flex-shrink-0"></div>
+    </div>
+  </div>
+</section>
+
+<style>
+  .timeline-container::-webkit-scrollbar {
+    display: none;
+  }
+
+  /* Reveal cards when in view */
+  .timeline-item.in-view .card-reveal {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  /* Parallax effect on year text */
+  .year-text {
+    will-change: transform;
+  }
+
+  .timeline-item:hover .year-text {
+    transform: translateX(-10px);
+  }
+</style>
+
+<script>
+  const initTimeline = () => {
+    const container = document.querySelector('.timeline-container');
+    const items = document.querySelectorAll('.timeline-item');
+
+    if (!container || !items.length) return;
+
+    // Intersection observer for card reveals
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('in-view');
+          }
+        });
+      },
+      {
+        root: container,
+        threshold: 0.3,
+        rootMargin: '0px 0px 0px 0px'
+      }
+    );
+
+    items.forEach((item) => observer.observe(item));
+
+    // Smooth horizontal scroll with mouse wheel
+    container.addEventListener('wheel', (e) => {
+      if (Math.abs((e as WheelEvent).deltaY) > Math.abs((e as WheelEvent).deltaX)) {
+        e.preventDefault();
+        container.scrollLeft += (e as WheelEvent).deltaY;
+      }
+    }, { passive: false });
+
+    // Parallax effect on scroll
+    container.addEventListener('scroll', () => {
+      const scrollLeft = container.scrollLeft;
+      items.forEach((item) => {
+        const yearText = item.querySelector('.year-text') as HTMLElement;
+        if (yearText) {
+          const rect = item.getBoundingClientRect();
+          const offset = (rect.left - window.innerWidth / 2) * 0.05;
+          yearText.style.transform = `translateX(${offset}px)`;
+        }
+      });
+    });
+  };
+
+  initTimeline();
+  document.addEventListener('astro:page-load', initTimeline);
+</script>
