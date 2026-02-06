@@ -1,5 +1,6 @@
 ---
 import { ViewTransitions } from "astro:transitions";
+import Analytics from "@vercel/analytics/astro";
 import "../styles/global.css";
 
 const {
@@ -92,6 +93,9 @@ const switchHref = currentLocale === "fr" ? enPath : frPath;
 
     <!-- Umami Analytics -->
     <script defer src="https://cloud.umami.is/script.js" data-website-id="4fecb2b3-7f38-4085-b1be-add02d3d971d"></script>
+
+    <!-- Vercel Web Analytics -->
+    <Analytics />
 
     <!-- View Transitions -->
     <ViewTransitions />
