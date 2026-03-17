@@ -180,14 +180,14 @@ export const projects: Project[] = [
     ],
     highlights: {
       fr: [
-        "224+ stars GitHub — package maintenu activement",
+        "245+ stars GitHub — package maintenu activement",
         "Compatible tous drivers Laravel (Redis, SQS, Database, RabbitMQ)",
         "Dashboard avec stats, graphiques 7 jours et retry en un clic",
         "Support Filament v4 avec rétrocompatibilité v2/v3",
         "Pruning automatique configurable et gestion des quotas",
       ],
       en: [
-        "224+ GitHub stars — actively maintained package",
+        "245+ GitHub stars — actively maintained package",
         "Works with all Laravel drivers (Redis, SQS, Database, RabbitMQ)",
         "Dashboard with stats, 7-day charts and one-click retry",
         "Filament v4 support with v2/v3 backward compatibility",

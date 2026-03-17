@@ -42,8 +42,8 @@ export const careerTimeline: CareerEvent[] = [
     title: { fr: "Filament Jobs Monitor", en: "Filament Jobs Monitor" },
     type: "project",
     description: {
-      fr: "Package open-source Laravel — 224+ stars GitHub",
-      en: "Open-source Laravel package — 224+ GitHub stars",
+      fr: "Package open-source Laravel — 245+ stars GitHub",
+      en: "Open-source Laravel package — 245+ GitHub stars",
     },
   },
   {
