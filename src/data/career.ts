@@ -57,6 +57,16 @@ export const careerTimeline: CareerEvent[] = [
     },
   },
   {
+    year: "2021",
+    title: { fr: "Directeur Technique", en: "Chief Technology Officer" },
+    company: "Dernier Cri",
+    type: "job",
+    description: {
+      fr: "Agence tech & produit de 120 personnes",
+      en: "Tech & product agency, 120 employees",
+    },
+  },
+  {
     year: "2016",
     title: { fr: "Co-fondateur & CTO", en: "Co-founder & CTO" },
     company: "Matière Noire",

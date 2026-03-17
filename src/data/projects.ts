@@ -15,6 +15,46 @@ export type Project = {
 
 export const projects: Project[] = [
   {
+    slug: "dart-matter",
+    name: {
+      fr: "Dart Matter",
+      en: "Dart Matter",
+    },
+    type: "Experiment",
+    status: "Live",
+    year: "2025",
+    oneLiner: {
+      fr: "App iOS de comptage de points de fléchettes — interface rapide, modes Cricket et X01.",
+      en: "iOS dart scoring app — fast interface, Cricket and X01 game modes.",
+    },
+    tags: ["Swift", "SwiftUI", "iOS", "Mobile"],
+    cover: "/images/projects/dart-matter.png",
+    links: [
+      {
+        label: { fr: "App Store", en: "App Store" },
+        href: "https://apps.apple.com/us/app/dart-matter/id6760351495",
+      },
+    ],
+    highlights: {
+      fr: [
+        "Interface rapide et claire avec clavier dédié",
+        "Modes de jeu Cricket et X01/501",
+        "Support 2 à 4 joueurs",
+        "Historique des parties avec fonction annuler",
+        "Design pensé pour une utilisation à une main",
+        "Modes sombre et clair",
+      ],
+      en: [
+        "Fast and clear interface with dedicated keyboard",
+        "Cricket and X01/501 game modes",
+        "Support for 2 to 4 players",
+        "Game history with undo capability",
+        "Designed for single-hand operation",
+        "Dark and light modes",
+      ],
+    },
+  },
+  {
     slug: "paperboy",
     name: {
       fr: "Paperboy",
