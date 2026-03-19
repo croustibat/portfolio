@@ -13,10 +13,10 @@
     "astro": "astro"
   },
   "dependencies": {
-    "@tailwindcss/vite": "^4.1.18",
-    "@vercel/analytics": "^1.6.1",
-    "astro": "^5.16.9",
+    "@tailwindcss/vite": "^4.2.2",
+    "@vercel/analytics": "^2.0.1",
+    "astro": "^6.0.6",
     "sharp": "^0.34.4",
-    "tailwindcss": "^4.1.18"
+    "tailwindcss": "^4.2.2"
   }
 }
