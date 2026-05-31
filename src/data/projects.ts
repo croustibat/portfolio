@@ -15,6 +15,46 @@ export type Project = {
 
 export const projects: Project[] = [
   {
+    slug: "stackly",
+    name: {
+      fr: "Stackly",
+      en: "Stackly",
+    },
+    type: "Experiment",
+    status: "Live",
+    year: "2026",
+    oneLiner: {
+      fr: "App macOS pour organiser ses onglets Safari en stacks thématiques — basculez d'un projet à l'autre en un clic.",
+      en: "macOS app to organize Safari tabs into themed stacks — switch between projects in one click.",
+    },
+    tags: ["Swift", "SwiftUI", "macOS", "Safari", "Productivité"],
+    cover: "/images/projects/stackly.png",
+    links: [
+      {
+        label: { fr: "App Store", en: "App Store" },
+        href: "https://apps.apple.com/fr/app/stackly/id6759226108",
+      },
+    ],
+    highlights: {
+      fr: [
+        "Stacks illimités avec icônes emoji, couleurs et dossiers hiérarchiques",
+        "Basculement instantané entre projets avec sauvegarde automatique",
+        "Synchronisation temps réel des onglets (badges ouvert / fermé)",
+        "Auto-suspension des onglets pour économiser la RAM",
+        "Import / export JSON et historique des onglets fermés (7 jours)",
+        "100% local, sans télémétrie ni compte — open-source",
+      ],
+      en: [
+        "Unlimited stacks with emoji icons, colors and hierarchical folders",
+        "Instant switching between projects with automatic saving",
+        "Real-time tab sync (open / closed badges)",
+        "Tab auto-suspension to save RAM",
+        "JSON import / export and closed-tab history (7 days)",
+        "100% local, no telemetry or account — open-source",
+      ],
+    },
+  },
+  {
     slug: "dart-matter",
     name: {
       fr: "Dart Matter",
