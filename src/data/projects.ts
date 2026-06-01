@@ -15,6 +15,41 @@ export type Project = {
 
 export const projects: Project[] = [
   {
+    slug: "hive-desktop",
+    name: {
+      fr: "Hive Desktop",
+      en: "Hive Desktop",
+    },
+    type: "Experiment",
+    status: "In progress",
+    year: "2026",
+    oneLiner: {
+      fr: "App d'orchestration d'agents IA — un backlog local de tickets distribués à des sous-agents parallèles, chacun isolé dans son propre worktree git.",
+      en: "AI agent orchestration app — a local ticket backlog dispatched to parallel sub-agents, each isolated in its own git worktree.",
+    },
+    tags: ["macOS", "AI Agents", "Orchestration", "DX", "Indie"],
+    cover: "/images/projects/hive-desktop.png",
+    links: [
+      { label: { fr: "Site web", en: "Website" }, href: "https://hive-desktop.vercel.app" },
+    ],
+    highlights: {
+      fr: [
+        "Backlog local de tickets pour piloter des agents IA de code",
+        "Exécution parallèle : chaque ticket dans un worktree git isolé",
+        "Distribution automatique des tâches aux sous-agents",
+        "Suivi en temps réel de l'avancement des agents",
+        "Pensé pour Claude Code, Codex et autres agents CLI",
+      ],
+      en: [
+        "Local ticket backlog to drive AI coding agents",
+        "Parallel execution: each ticket in its own isolated git worktree",
+        "Automatic task dispatch to sub-agents",
+        "Real-time tracking of agent progress",
+        "Built for Claude Code, Codex and other CLI agents",
+      ],
+    },
+  },
+  {
     slug: "stackly",
     name: {
       fr: "Stackly",

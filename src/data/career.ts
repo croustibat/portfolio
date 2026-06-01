@@ -11,6 +11,24 @@ export type CareerEvent = {
 
 export const careerTimeline: CareerEvent[] = [
   {
+    year: "2026",
+    title: { fr: "Hive Desktop", en: "Hive Desktop" },
+    type: "project",
+    description: {
+      fr: "App d'orchestration d'agents IA — backlog local et sous-agents parallèles en worktrees git isolés",
+      en: "AI agent orchestration app — local backlog and parallel sub-agents in isolated git worktrees",
+    },
+  },
+  {
+    year: "2026",
+    title: { fr: "Stackly", en: "Stackly" },
+    type: "project",
+    description: {
+      fr: "App macOS pour organiser les onglets Safari en stacks thématiques",
+      en: "macOS app to organize Safari tabs into themed stacks",
+    },
+  },
+  {
     year: "2025",
     title: { fr: "Pennywize", en: "Pennywize" },
     type: "project",
