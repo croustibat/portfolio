@@ -91,8 +91,26 @@ const segments = points.slice(1).map((p, i) => {
           </div>
         </div>
 
-        {/* Right column: panels + step navigation */}
+        {/* Right column: compact step navigation (top-right) + panels */}
         <div>
+          <div class="journey-nav mb-5 flex items-center justify-end gap-2">
+            <button
+              type="button"
+              aria-label={t.prev}
+              title={t.prev}
+              class="journey-prev inline-flex h-9 w-9 items-center justify-center rounded-full border border-[rgb(var(--border))] text-sm text-[rgb(var(--text-secondary))] transition hover:border-[rgb(var(--text-tertiary))] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[rgb(var(--accent))] disabled:cursor-not-allowed disabled:opacity-30"
+            >
+              <span aria-hidden="true">←</span>
+            </button>
+            <button
+              type="button"
+              aria-label={t.next}
+              title={t.next}
+              class="journey-next inline-flex h-9 w-9 items-center justify-center rounded-full bg-[rgb(var(--text-primary))] text-sm text-[rgb(var(--bg-primary))] transition hover:opacity-90 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[rgb(var(--accent))] disabled:cursor-not-allowed disabled:opacity-30"
+            >
+              <span aria-hidden="true">→</span>
+            </button>
+          </div>
           <div class="journey-panels relative min-h-[320px]">
           {journey.map((stop, i) => (
             <article class="journey-panel absolute inset-0" data-panel={i} aria-hidden={i === 0 ? "false" : "true"}>
@@ -126,21 +144,6 @@ const segments = points.slice(1).map((p, i) => {
               </div>
             </article>
           ))}
-          </div>
-
-          <div class="journey-nav mt-6 flex items-center gap-3">
-            <button
-              type="button"
-              class="journey-prev inline-flex items-center gap-2 rounded-full border border-[rgb(var(--border))] px-4 py-2.5 text-sm font-medium text-[rgb(var(--text-secondary))] transition hover:border-[rgb(var(--text-tertiary))] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[rgb(var(--accent))] disabled:cursor-not-allowed disabled:opacity-30"
-            >
-              <span aria-hidden="true">←</span> {t.prev}
-            </button>
-            <button
-              type="button"
-              class="journey-next inline-flex items-center gap-2 rounded-full bg-[rgb(var(--text-primary))] px-5 py-2.5 text-sm font-medium text-[rgb(var(--bg-primary))] transition hover:opacity-90 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[rgb(var(--accent))] disabled:cursor-not-allowed disabled:opacity-30"
-            >
-              {t.next} <span aria-hidden="true">→</span>
-            </button>
           </div>
         </div>
       </div>
@@ -314,14 +317,14 @@ const segments = points.slice(1).map((p, i) => {
 
     const tl = gsap.timeline({
       defaults: { ease: "none" },
+      onUpdate: () => updateActive(tl.progress()), // sync active city with panels
       scrollTrigger: {
         trigger: pin,
         start: "center center",
         end: () => "+=" + P.length * window.innerHeight * 0.7,
         pin: true,
-        scrub: 1,
+        scrub: 1.5,
         invalidateOnRefresh: true,
-        onUpdate: (self) => updateActive(self.progress),
       },
     });
 
@@ -336,13 +339,16 @@ const segments = points.slice(1).map((p, i) => {
 
     setActive(0);
 
-    // Step navigation: jump to a city's scroll position; scrub:1 animates the trip.
-    // The <html> uses scroll-behavior:smooth (Tailwind's scroll-smooth), which
-    // swallows programmatic scrollTo — force 'auto' just for the jump.
+    // Step navigation: smoothly animate the scroll to a city's position (a slow
+    // tween, so the trip feels gentle) — scrub then follows. The <html> uses
+    // scroll-behavior:smooth (Tailwind's scroll-smooth), which swallows a
+    // programmatic scrollTo, so force 'auto' for the duration of the tween.
     const st = tl.scrollTrigger!;
     const jumpTo = (idx: number) => {
       const clamped = Math.max(0, Math.min(total, idx));
       const y = Math.min(st.start + (clamped / total) * (st.end - st.start), st.end - 2);
+      // Instant scroll set (the site's scroll-smooth + ScrollTrigger make animated
+      // programmatic scroll erratic); scrub:1 then eases the trip over ~1s.
       const html = document.documentElement;
       const prev = html.style.scrollBehavior;
       html.style.scrollBehavior = "auto";
