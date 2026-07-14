@@ -49,7 +49,7 @@ const segments = points.slice(1).map((p, i) => {
 
   {/* ============ INTERACTIVE MAP (desktop + JS) ============ */}
   <div class="journey-map">
-    <div class="journey-pin relative flex min-h-screen items-center">
+    <div class="journey-pin relative">
       <div class="grid w-full items-center gap-8 md:grid-cols-2">
         {/* Map */}
         <div class="relative">
@@ -88,7 +88,6 @@ const segments = points.slice(1).map((p, i) => {
           {journey.map((stop, i) => (
             <article class="journey-panel absolute inset-0" data-panel={i} aria-hidden={i === 0 ? "false" : "true"}>
               <div class="flex items-baseline gap-3">
-                <span class="text-4xl">{stop.flag}</span>
                 <div>
                   <h3 class="text-2xl font-bold tracking-tight text-[rgb(var(--text-primary))]">{stop.city}</h3>
                   <p class="text-sm text-[rgb(var(--text-tertiary))]">{pick(stop.country, locale)} · {stop.period}</p>
@@ -129,7 +128,6 @@ const segments = points.slice(1).map((p, i) => {
       <li class="relative">
         <span class="absolute -left-[27px] top-1.5 h-3 w-3 rounded-full border-2 border-[rgb(var(--accent))] bg-[rgb(var(--bg-primary))]"></span>
         <div class="flex items-baseline gap-2">
-          <span class="text-xl">{stop.flag}</span>
           <h3 class="text-lg font-bold text-[rgb(var(--text-primary))]">{stop.city}</h3>
           <span class="text-xs text-[rgb(var(--text-tertiary))]">· {stop.period}</span>
         </div>
@@ -170,7 +168,6 @@ const segments = points.slice(1).map((p, i) => {
     stroke: rgb(var(--accent));
     stroke-width: 2.5;
     stroke-linecap: round;
-    vector-effect: non-scaling-stroke;
   }
   .journey-land { vector-effect: non-scaling-stroke; }
   .journey-dot {
@@ -194,7 +191,7 @@ const segments = points.slice(1).map((p, i) => {
 
   gsap.registerPlugin(ScrollTrigger);
 
-  const Z = 2.4; // camera zoom factor
+  const Z = 1.9; // camera zoom factor (lower = more of France visible)
   let triggers: ScrollTrigger[] = [];
 
   const initJourney = () => {
@@ -244,7 +241,7 @@ const segments = points.slice(1).map((p, i) => {
       defaults: { ease: "none" },
       scrollTrigger: {
         trigger: pin,
-        start: "top top",
+        start: "center center",
         end: () => "+=" + P.length * window.innerHeight * 0.7,
         pin: true,
         scrub: 1,
