@@ -27,3 +27,6 @@ pnpm-debug.log*
 
 # Memory MCP
 .memory/
+
+# Journey map: large public-domain source data (mapData.ts is generated & committed)
+scripts/countries-50m.json

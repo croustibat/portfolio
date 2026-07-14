@@ -1,0 +1,273 @@
+---
+import type { Locale } from "../i18n";
+import { pick } from "../i18n";
+import { journey } from "../data/journey";
+import { mapData } from "../data/mapData";
+
+const { locale } = Astro.props as { locale: Locale };
+
+const copy = {
+  fr: {
+    eyebrow: "00",
+    title: "Parcours",
+    subtitle: "De Dijon à Nantes, 20 ans à travers l'Europe.",
+    scrollHint: "Scroll pour voyager",
+  },
+  en: {
+    eyebrow: "00",
+    title: "Journey",
+    subtitle: "From Dijon to Nantes, 20 years across Europe.",
+    scrollHint: "Scroll to travel",
+  },
+};
+const t = copy[locale];
+
+const typeLabels: Record<string, Record<string, string>> = {
+  fr: { job: "Poste", project: "Projet", milestone: "Milestone", education: "Formation" },
+  en: { job: "Role", project: "Project", milestone: "Milestone", education: "Education" },
+};
+
+// Build the ordered route points (projected map coordinates) + segments.
+const points = journey.map((stop) => ({ id: stop.id, ...mapData.cities[stop.id] }));
+const segments = points.slice(1).map((p, i) => {
+  const a = points[i];
+  const len = Math.hypot(p.x - a.x, p.y - a.y);
+  return { d: `M${a.x},${a.y}L${p.x},${p.y}`, len: Number(len.toFixed(1)) };
+});
+---
+
+<section id="journey" class="journey relative py-16" aria-labelledby="journey-title" data-mode="list">
+  <div class="absolute left-0 right-0 top-0 flex items-center gap-4">
+    <div class="h-px flex-1 bg-gradient-to-r from-transparent via-[rgb(var(--border))] to-transparent"></div>
+  </div>
+
+  <div class="animate-on-scroll mb-8">
+    <span class="text-xs font-medium uppercase tracking-widest text-[rgb(var(--accent-tertiary))]">{t.eyebrow}</span>
+    <h2 id="journey-title" class="mt-2 text-3xl font-bold tracking-tight text-[rgb(var(--text-primary))] md:text-4xl">{t.title}</h2>
+    <p class="mt-3 max-w-md text-[rgb(var(--text-secondary))]">{t.subtitle}</p>
+  </div>
+
+  {/* ============ INTERACTIVE MAP (desktop + JS) ============ */}
+  <div class="journey-map">
+    <div class="journey-pin relative flex min-h-screen items-center">
+      <div class="grid w-full items-center gap-8 md:grid-cols-2">
+        {/* Map */}
+        <div class="relative">
+          <div class="journey-scrollhint pointer-events-none absolute left-4 top-4 z-10 flex items-center gap-2 text-[10px] font-medium uppercase tracking-widest text-[rgb(var(--text-tertiary))]">
+            <span>{t.scrollHint}</span>
+            <span class="arrow-bounce">↓</span>
+          </div>
+          <div class="relative aspect-square w-full overflow-hidden rounded-3xl border border-[rgb(var(--border))] bg-[rgb(var(--bg-primary))]">
+            <svg class="h-full w-full" viewBox={mapData.viewBox} preserveAspectRatio="xMidYMid slice" role="img" aria-label={t.title}>
+              <g class="journey-camera">
+                <path d={mapData.land} class="journey-land" />
+                <path d={mapData.borders} class="journey-borders" fill="none" />
+                {segments.map((s, i) => (
+                  <path
+                    d={s.d}
+                    class="journey-segment"
+                    data-seg={i}
+                    fill="none"
+                    style={`stroke-dasharray:${s.len};stroke-dashoffset:${s.len};`}
+                  />
+                ))}
+                {points.map((p, i) => (
+                  <circle cx={p.x} cy={p.y} r="4" class="journey-dot" data-dot={i} />
+                ))}
+                <g class="journey-marker" data-marker>
+                  <circle r="7" class="journey-marker-halo" />
+                  <circle r="3.5" class="journey-marker-core" />
+                </g>
+              </g>
+            </svg>
+          </div>
+        </div>
+
+        {/* Panels */}
+        <div class="journey-panels relative min-h-[320px]">
+          {journey.map((stop, i) => (
+            <article class="journey-panel absolute inset-0" data-panel={i} aria-hidden={i === 0 ? "false" : "true"}>
+              <div class="flex items-baseline gap-3">
+                <span class="text-4xl">{stop.flag}</span>
+                <div>
+                  <h3 class="text-2xl font-bold tracking-tight text-[rgb(var(--text-primary))]">{stop.city}</h3>
+                  <p class="text-sm text-[rgb(var(--text-tertiary))]">{pick(stop.country, locale)} · {stop.period}</p>
+                </div>
+                <span class="ml-auto font-mono text-xs text-[rgb(var(--text-tertiary))]">{String(i + 1).padStart(2, "0")}/{String(journey.length).padStart(2, "0")}</span>
+              </div>
+              <div class="mt-5 space-y-3">
+                {stop.roles.map((role) => (
+                  <div class="rounded-xl border border-[rgb(var(--border)/0.6)] bg-[rgb(var(--bg-secondary))] p-4">
+                    <div class="mb-1.5 flex items-center gap-2">
+                      <span class={`inline-block rounded-full px-2 py-0.5 text-[10px] font-semibold uppercase tracking-wider ${
+                        role.type === "job"
+                          ? "bg-[rgb(var(--accent)/0.1)] text-[rgb(var(--accent))]"
+                          : role.type === "project"
+                          ? "bg-[rgb(var(--accent-secondary)/0.1)] text-[rgb(var(--accent-secondary))]"
+                          : role.type === "milestone"
+                          ? "bg-emerald-500/10 text-emerald-600 dark:text-emerald-400"
+                          : "bg-[rgb(var(--accent-tertiary)/0.1)] text-[rgb(var(--accent-tertiary))]"
+                      }`}>{typeLabels[locale][role.type]}</span>
+                      <span class="text-xs font-medium text-[rgb(var(--text-secondary))]">{role.org}</span>
+                      <span class="ml-auto font-mono text-[11px] text-[rgb(var(--text-tertiary))]">{role.period}</span>
+                    </div>
+                    <h4 class="text-sm font-semibold text-[rgb(var(--text-primary))]">{pick(role.title, locale)}</h4>
+                    <p class="mt-1 text-[13px] leading-relaxed text-[rgb(var(--text-secondary))]">{pick(role.description, locale)}</p>
+                  </div>
+                ))}
+              </div>
+            </article>
+          ))}
+        </div>
+      </div>
+    </div>
+  </div>
+
+  {/* ============ FALLBACK LIST (mobile / no-JS / reduced-motion) ============ */}
+  <ol class="journey-fallback mt-4 space-y-6 border-l border-[rgb(var(--border))] pl-6">
+    {journey.map((stop) => (
+      <li class="relative">
+        <span class="absolute -left-[27px] top-1.5 h-3 w-3 rounded-full border-2 border-[rgb(var(--accent))] bg-[rgb(var(--bg-primary))]"></span>
+        <div class="flex items-baseline gap-2">
+          <span class="text-xl">{stop.flag}</span>
+          <h3 class="text-lg font-bold text-[rgb(var(--text-primary))]">{stop.city}</h3>
+          <span class="text-xs text-[rgb(var(--text-tertiary))]">· {stop.period}</span>
+        </div>
+        <div class="mt-2 space-y-2">
+          {stop.roles.map((role) => (
+            <div class="rounded-lg border border-[rgb(var(--border)/0.6)] bg-[rgb(var(--bg-secondary))] p-3">
+              <div class="flex items-center gap-2">
+                <span class="text-xs font-medium text-[rgb(var(--text-secondary))]">{role.org}</span>
+                <span class="ml-auto font-mono text-[11px] text-[rgb(var(--text-tertiary))]">{role.period}</span>
+              </div>
+              <h4 class="mt-0.5 text-sm font-semibold text-[rgb(var(--text-primary))]">{pick(role.title, locale)}</h4>
+              <p class="mt-1 text-[13px] leading-relaxed text-[rgb(var(--text-secondary))]">{pick(role.description, locale)}</p>
+            </div>
+          ))}
+        </div>
+      </li>
+    ))}
+  </ol>
+</section>
+
+<style>
+  /* Default: fallback list shown, interactive map hidden (no-JS safe). */
+  .journey-map { display: none; }
+  .journey[data-mode="map"] .journey-map { display: block; }
+  .journey[data-mode="map"] .journey-fallback { display: none; }
+
+  .journey-land {
+    fill: rgb(var(--bg-tertiary));
+    stroke: rgb(var(--text-tertiary) / 0.45);
+    stroke-width: 0.75;
+  }
+  .journey-borders {
+    stroke: rgb(var(--text-tertiary) / 0.35);
+    stroke-width: 0.6;
+    vector-effect: non-scaling-stroke;
+  }
+  .journey-segment {
+    stroke: rgb(var(--accent));
+    stroke-width: 2.5;
+    stroke-linecap: round;
+    vector-effect: non-scaling-stroke;
+  }
+  .journey-land { vector-effect: non-scaling-stroke; }
+  .journey-dot {
+    fill: rgb(var(--bg-primary));
+    stroke: rgb(var(--accent) / 0.5);
+    stroke-width: 1.5;
+    vector-effect: non-scaling-stroke;
+  }
+  .journey-marker-halo { fill: rgb(var(--accent) / 0.25); }
+  .journey-marker-core { fill: rgb(var(--accent)); }
+
+  @media (prefers-reduced-motion: reduce) {
+    .journey-map { display: none !important; }
+    .journey-fallback { display: block !important; }
+  }
+</style>
+
+<script>
+  import gsap from "gsap";
+  import { ScrollTrigger } from "gsap/ScrollTrigger";
+
+  gsap.registerPlugin(ScrollTrigger);
+
+  const Z = 2.4; // camera zoom factor
+  let triggers: ScrollTrigger[] = [];
+
+  const initJourney = () => {
+    // Clean up any previous instance (View Transitions re-runs scripts).
+    triggers.forEach((tr) => tr.kill());
+    triggers = [];
+
+    const section = document.querySelector<HTMLElement>(".journey");
+    if (!section) return;
+
+    const desktop = window.matchMedia("(min-width: 768px)").matches;
+    const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    if (!desktop || reduce) {
+      section.dataset.mode = "list";
+      return;
+    }
+    section.dataset.mode = "map";
+
+    const svg = section.querySelector<SVGSVGElement>("svg");
+    const marker = section.querySelector<SVGGElement>(".journey-marker");
+    const pin = section.querySelector<HTMLElement>(".journey-pin");
+    const segs = gsap.utils.toArray<SVGPathElement>(".journey-segment");
+    const dots = gsap.utils.toArray<SVGCircleElement>(".journey-dot");
+    const panels = gsap.utils.toArray<HTMLElement>(".journey-panel");
+    if (!svg || !marker || !pin || !dots.length) return;
+
+    const vb = svg.getAttribute("viewBox")!.split(" ").map(Number);
+    const full = { w: vb[2], h: vb[3] };
+    const P = dots.map((d) => ({ x: +d.getAttribute("cx")!, y: +d.getAttribute("cy")! }));
+
+    // Camera = animated viewBox window (robust pan + zoom, no transform-origin traps).
+    const viewFor = (p: { x: number; y: number }) => ({
+      x: p.x - full.w / Z / 2,
+      y: p.y - full.h / Z / 2,
+      w: full.w / Z,
+      h: full.h / Z,
+    });
+    const cam = viewFor(P[0]);
+    const applyCam = () => svg.setAttribute("viewBox", `${cam.x} ${cam.y} ${cam.w} ${cam.h}`);
+    applyCam();
+
+    gsap.set(marker, { x: P[0].x, y: P[0].y });
+    gsap.set(panels, { autoAlpha: 0 });
+    gsap.set(panels[0], { autoAlpha: 1 });
+
+    const tl = gsap.timeline({
+      defaults: { ease: "none" },
+      scrollTrigger: {
+        trigger: pin,
+        start: "top top",
+        end: () => "+=" + P.length * window.innerHeight * 0.7,
+        pin: true,
+        scrub: 1,
+        invalidateOnRefresh: true,
+      },
+    });
+
+    for (let i = 1; i < P.length; i++) {
+      const at = i - 1;
+      tl.to(segs[i - 1], { strokeDashoffset: 0 }, at);
+      tl.to(marker, { x: P[i].x, y: P[i].y }, at);
+      tl.to(cam, { ...viewFor(P[i]), onUpdate: applyCam }, at);
+      tl.to(panels[i - 1], { autoAlpha: 0, duration: 0.3, ease: "power1.out" }, at + 0.3);
+      tl.to(panels[i], { autoAlpha: 1, duration: 0.3, ease: "power1.in" }, at + 0.55);
+    }
+
+    triggers = ScrollTrigger.getAll();
+  };
+
+  initJourney();
+  document.addEventListener("astro:page-load", initJourney);
+  document.addEventListener("astro:before-swap", () => {
+    triggers.forEach((tr) => tr.kill());
+    triggers = [];
+  });
+</script>
