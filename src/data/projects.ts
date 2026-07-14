@@ -3,7 +3,7 @@ import type { I18nText } from "../i18n";
 export type Project = {
   slug: string;
   name: I18nText;
-  type: "SaaS" | "Client" | "Open-source" | "Experiment" | "Legacy" | "Company";
+  type: "SaaS" | "Client" | "Open-source" | "Experiment" | "Legacy" | "Company" | "Game";
   status: "Live" | "In progress" | "Experimental" | "Shipped";
   oneLiner: I18nText;
   year?: string;
@@ -14,6 +14,83 @@ export type Project = {
 };
 
 export const projects: Project[] = [
+  {
+    slug: "pinpoint",
+    name: {
+      fr: "Pinpoint",
+      en: "Pinpoint",
+    },
+    type: "Open-source",
+    status: "Live",
+    year: "2026",
+    oneLiner: {
+      fr: "App macOS en barre de menu qui capture l'écran, laisse poser des marqueurs numérotés sur ce qui compte, et copie un prompt prêt à coller pour ton agent IA.",
+      en: "macOS menu-bar app that captures your screen, lets you drop numbered markers on what matters, and copies a ready-to-paste prompt for your AI agent.",
+    },
+    tags: ["Swift", "SwiftUI", "macOS", "AI Agents", "Open-source"],
+    // cover: "/images/projects/pinpoint.png", // TODO: ajouter le PNG dans public/images/projects/ puis décommenter
+    links: [
+      { label: { fr: "Site web", en: "Website" }, href: "https://pinpoint-ashy.vercel.app" },
+      { label: { fr: "GitHub", en: "GitHub" }, href: "https://github.com/croustibat/Pinpoint" },
+      {
+        label: { fr: "Télécharger", en: "Download" },
+        href: "https://github.com/croustibat/Pinpoint/releases/latest",
+      },
+    ],
+    highlights: {
+      fr: [
+        "Capture de région (⌘⇧1, rebindable) — résolution native, multi-écrans et Retina",
+        "Marqueurs numérotés en 3 styles, avec notes, flèches et rectangles pour pointer précisément",
+        "⌘C copie l'image annotée + un prompt structuré (position des marqueurs en %) lisible par Claude Code, Codex & co",
+        "Légende intégrée en option — un seul collage transporte l'image et les instructions",
+        "The Shelf : bibliothèque intégrée de captures (favoris, tri, Quick Look, réouverture annotée)",
+        "100% natif SwiftUI + ScreenCaptureKit, en barre de menu — vos captures ne quittent jamais le Mac",
+      ],
+      en: [
+        "Region capture (⌘⇧1, rebindable) — native resolution, multi-display and Retina aware",
+        "Numbered markers in 3 styles, with notes, arrows and rectangles to point precisely",
+        "⌘C copies the annotated image + a structured prompt (marker positions in %) that Claude Code, Codex & co parse cleanly",
+        "Optional baked-in legend — a single paste carries the image and the instructions",
+        "The Shelf: built-in capture library (favorite, sort, Quick Look, reopen with annotations)",
+        "100% native SwiftUI + ScreenCaptureKit, menu-bar app — your captures never leave your Mac",
+      ],
+    },
+  },
+  {
+    slug: "tinywind",
+    name: {
+      fr: "Tinywind",
+      en: "Tinywind",
+    },
+    type: "Game",
+    status: "In progress",
+    year: "2026",
+    oneLiner: {
+      fr: "Petit jeu de voile en HTML5 — tiens la barre avec le vent, règle ta voile et canonne tes cibles au ralenti.",
+      en: "A tiny HTML5 sailing game — hold the tiller with the wind, trim your sail, and cannon your targets in slow-motion.",
+    },
+    tags: ["Game", "HTML5 Canvas", "JavaScript", "Indie", "Astro"],
+    // cover: "/images/projects/tinywind.png", // TODO: ajouter le PNG dans public/images/projects/ puis décommenter
+    links: [
+      { label: { fr: "Jouer", en: "Play" }, href: "https://tinywind-alpha.vercel.app/" },
+    ],
+    highlights: {
+      fr: [
+        "Navigation à la voile : gère le cap à la barre et l'allure selon le vent",
+        "Tir au canon avec visée au ralenti (bullet-time) pour ajuster ses tirs",
+        "Ambiance minimaliste, rendu canvas HTML5 et contrôles 100% clavier",
+        "Système de score et progression entre les îles",
+        "Prototype jouable directement dans le navigateur, en développement actif (alpha)",
+      ],
+      en: [
+        "Sailing at its core: set your heading with the tiller and trim to the wind",
+        "Cannon fire with slow-motion (bullet-time) aiming to line up your shots",
+        "Minimalist mood, HTML5 canvas rendering and fully keyboard-driven controls",
+        "Scoring system and progression across the islands",
+        "Playable prototype right in the browser, in active development (alpha)",
+      ],
+    },
+  },
   {
     slug: "hive-desktop",
     name: {
