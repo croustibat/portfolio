@@ -12,6 +12,24 @@ export type CareerEvent = {
 export const careerTimeline: CareerEvent[] = [
   {
     year: "2026",
+    title: { fr: "Pinpoint", en: "Pinpoint" },
+    type: "project",
+    description: {
+      fr: "Utilitaire macOS open-source — capture d'écran annotée et prompts prêts pour agents IA",
+      en: "Open-source macOS utility — annotated screen capture and ready-to-paste prompts for AI agents",
+    },
+  },
+  {
+    year: "2026",
+    title: { fr: "Tinywind", en: "Tinywind" },
+    type: "project",
+    description: {
+      fr: "Petit jeu de voile indie en HTML5 — barre, voile et tir au canon au ralenti",
+      en: "Tiny indie HTML5 sailing game — steering, sail trim and slow-motion cannon fire",
+    },
+  },
+  {
+    year: "2026",
     title: { fr: "Hive Desktop", en: "Hive Desktop" },
     type: "project",
     description: {

@@ -28,7 +28,7 @@ export const projects: Project[] = [
       en: "macOS menu-bar app that captures your screen, lets you drop numbered markers on what matters, and copies a ready-to-paste prompt for your AI agent.",
     },
     tags: ["Swift", "SwiftUI", "macOS", "AI Agents", "Open-source"],
-    // cover: "/images/projects/pinpoint.png", // TODO: ajouter le PNG dans public/images/projects/ puis décommenter
+    cover: "/images/projects/pinpoint.webp",
     links: [
       { label: { fr: "Site web", en: "Website" }, href: "https://pinpoint-ashy.vercel.app" },
       { label: { fr: "GitHub", en: "GitHub" }, href: "https://github.com/croustibat/Pinpoint" },
