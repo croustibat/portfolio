@@ -12,12 +12,16 @@ const copy = {
     title: "Parcours",
     subtitle: "De Dijon à Nantes, 20 ans à travers l'Europe.",
     scrollHint: "Scroll pour voyager",
+    prev: "Précédente",
+    next: "Prochaine étape",
   },
   en: {
     eyebrow: "00",
     title: "Journey",
     subtitle: "From Dijon to Nantes, 20 years across Europe.",
     scrollHint: "Scroll to travel",
+    prev: "Previous",
+    next: "Next stop",
   },
 };
 const t = copy[locale];
@@ -27,12 +31,19 @@ const typeLabels: Record<string, Record<string, string>> = {
   en: { job: "Role", project: "Project", milestone: "Milestone", education: "Education" },
 };
 
-// Build the ordered route points (projected map coordinates) + segments.
-const points = journey.map((stop) => ({ id: stop.id, ...mapData.cities[stop.id] }));
+// Build the ordered route points (projected map coordinates) + curved segments.
+const points = journey.map((stop) => ({ id: stop.id, city: stop.city, ...mapData.cities[stop.id] }));
+
+// "Flight" arcs between consecutive cities: quadratic Bézier bowing to one side.
 const segments = points.slice(1).map((p, i) => {
   const a = points[i];
-  const len = Math.hypot(p.x - a.x, p.y - a.y);
-  return { d: `M${a.x},${a.y}L${p.x},${p.y}`, len: Number(len.toFixed(1)) };
+  const dx = p.x - a.x;
+  const dy = p.y - a.y;
+  const len = Math.hypot(dx, dy) || 1;
+  const k = 0.18; // curvature amount
+  const cx = (a.x + p.x) / 2 + (dy / len) * len * k;
+  const cy = (a.y + p.y) / 2 - (dx / len) * len * k;
+  return { d: `M${a.x},${a.y} Q${cx.toFixed(1)},${cy.toFixed(1)} ${p.x},${p.y}` };
 });
 ---
 
@@ -63,16 +74,13 @@ const segments = points.slice(1).map((p, i) => {
                 <path d={mapData.land} class="journey-land" />
                 <path d={mapData.borders} class="journey-borders" fill="none" />
                 {segments.map((s, i) => (
-                  <path
-                    d={s.d}
-                    class="journey-segment"
-                    data-seg={i}
-                    fill="none"
-                    style={`stroke-dasharray:${s.len};stroke-dashoffset:${s.len};`}
-                  />
+                  <path d={s.d} class="journey-segment" data-seg={i} fill="none" />
                 ))}
                 {points.map((p, i) => (
                   <circle cx={p.x} cy={p.y} r="4" class="journey-dot" data-dot={i} />
+                ))}
+                {points.map((p, i) => (
+                  <text x={p.x} y={p.y - 11} class="journey-label" data-label={i} text-anchor="middle">{p.city}</text>
                 ))}
                 <g class="journey-marker" data-marker>
                   <circle r="7" class="journey-marker-halo" />
@@ -83,8 +91,9 @@ const segments = points.slice(1).map((p, i) => {
           </div>
         </div>
 
-        {/* Panels */}
-        <div class="journey-panels relative min-h-[320px]">
+        {/* Right column: panels + step navigation */}
+        <div>
+          <div class="journey-panels relative min-h-[320px]">
           {journey.map((stop, i) => (
             <article class="journey-panel absolute inset-0" data-panel={i} aria-hidden={i === 0 ? "false" : "true"}>
               <div class="flex items-baseline gap-3">
@@ -117,6 +126,22 @@ const segments = points.slice(1).map((p, i) => {
               </div>
             </article>
           ))}
+          </div>
+
+          <div class="journey-nav mt-6 flex items-center gap-3">
+            <button
+              type="button"
+              class="journey-prev inline-flex items-center gap-2 rounded-full border border-[rgb(var(--border))] px-4 py-2.5 text-sm font-medium text-[rgb(var(--text-secondary))] transition hover:border-[rgb(var(--text-tertiary))] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[rgb(var(--accent))] disabled:cursor-not-allowed disabled:opacity-30"
+            >
+              <span aria-hidden="true">←</span> {t.prev}
+            </button>
+            <button
+              type="button"
+              class="journey-next inline-flex items-center gap-2 rounded-full bg-[rgb(var(--text-primary))] px-5 py-2.5 text-sm font-medium text-[rgb(var(--bg-primary))] transition hover:opacity-90 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[rgb(var(--accent))] disabled:cursor-not-allowed disabled:opacity-30"
+            >
+              {t.next} <span aria-hidden="true">→</span>
+            </button>
+          </div>
         </div>
       </div>
     </div>
@@ -179,6 +204,28 @@ const segments = points.slice(1).map((p, i) => {
   .journey-marker-halo { fill: rgb(var(--accent) / 0.25); }
   .journey-marker-core { fill: rgb(var(--accent)); }
 
+  .journey-label {
+    fill: rgb(var(--text-tertiary));
+    font-size: 13px;
+    font-weight: 600;
+    letter-spacing: 0.01em;
+    opacity: 0.8;
+    pointer-events: none;
+    paint-order: stroke;
+    stroke: rgb(var(--bg-primary));
+    stroke-width: 3px;
+    stroke-linejoin: round;
+    vector-effect: non-scaling-stroke;
+  }
+  .journey-label.is-active {
+    fill: rgb(var(--accent));
+    opacity: 1;
+  }
+  .journey-dot.is-active {
+    fill: rgb(var(--accent));
+    stroke: rgb(var(--accent));
+  }
+
   @media (prefers-reduced-motion: reduce) {
     .journey-map { display: none !important; }
     .journey-fallback { display: block !important; }
@@ -188,8 +235,9 @@ const segments = points.slice(1).map((p, i) => {
 <script>
   import gsap from "gsap";
   import { ScrollTrigger } from "gsap/ScrollTrigger";
+  import { MotionPathPlugin } from "gsap/MotionPathPlugin";
 
-  gsap.registerPlugin(ScrollTrigger);
+  gsap.registerPlugin(ScrollTrigger, MotionPathPlugin);
 
   const Z = 1.9; // camera zoom factor (lower = more of France visible)
   let triggers: ScrollTrigger[] = [];
@@ -215,14 +263,18 @@ const segments = points.slice(1).map((p, i) => {
     const pin = section.querySelector<HTMLElement>(".journey-pin");
     const segs = gsap.utils.toArray<SVGPathElement>(".journey-segment");
     const dots = gsap.utils.toArray<SVGCircleElement>(".journey-dot");
+    const labels = gsap.utils.toArray<SVGTextElement>(".journey-label");
     const panels = gsap.utils.toArray<HTMLElement>(".journey-panel");
+    const prevBtn = section.querySelector<HTMLButtonElement>(".journey-prev");
+    const nextBtn = section.querySelector<HTMLButtonElement>(".journey-next");
     if (!svg || !marker || !pin || !dots.length) return;
 
     const vb = svg.getAttribute("viewBox")!.split(" ").map(Number);
     const full = { w: vb[2], h: vb[3] };
     const P = dots.map((d) => ({ x: +d.getAttribute("cx")!, y: +d.getAttribute("cy")! }));
+    const total = P.length - 1;
 
-    // Camera = animated viewBox window (robust pan + zoom, no transform-origin traps).
+    // Camera = animated viewBox window (robust pan, constant zoom).
     const viewFor = (p: { x: number; y: number }) => ({
       x: p.x - full.w / Z / 2,
       y: p.y - full.h / Z / 2,
@@ -233,9 +285,32 @@ const segments = points.slice(1).map((p, i) => {
     const applyCam = () => svg.setAttribute("viewBox", `${cam.x} ${cam.y} ${cam.w} ${cam.h}`);
     applyCam();
 
+    // Hide each arc until it is drawn (getTotalLength handles curves too).
+    segs.forEach((seg) => {
+      const L = seg.getTotalLength();
+      gsap.set(seg, { strokeDasharray: L, strokeDashoffset: L });
+    });
+
     gsap.set(marker, { x: P[0].x, y: P[0].y });
     gsap.set(panels, { autoAlpha: 0 });
     gsap.set(panels[0], { autoAlpha: 1 });
+
+    // Active city highlight (label + dot + nav disabled state).
+    let activeIdx = -1;
+    const setActive = (idx: number) => {
+      if (idx === activeIdx) return;
+      activeIdx = idx;
+      dots.forEach((d, j) => d.classList.toggle("is-active", j === idx));
+      labels.forEach((l, j) => l.classList.toggle("is-active", j === idx));
+      if (prevBtn) prevBtn.disabled = idx <= 0;
+      if (nextBtn) nextBtn.disabled = idx >= total;
+    };
+    const updateActive = (progress: number) => {
+      const time = progress * total;
+      let idx = 0;
+      for (let i = 1; i < P.length; i++) if (time >= i - 1 + 0.55) idx = i;
+      setActive(idx);
+    };
 
     const tl = gsap.timeline({
       defaults: { ease: "none" },
@@ -246,17 +321,36 @@ const segments = points.slice(1).map((p, i) => {
         pin: true,
         scrub: 1,
         invalidateOnRefresh: true,
+        onUpdate: (self) => updateActive(self.progress),
       },
     });
 
     for (let i = 1; i < P.length; i++) {
       const at = i - 1;
       tl.to(segs[i - 1], { strokeDashoffset: 0 }, at);
-      tl.to(marker, { x: P[i].x, y: P[i].y }, at);
+      tl.to(marker, { motionPath: { path: segs[i - 1], alignOrigin: [0.5, 0.5] } }, at);
       tl.to(cam, { ...viewFor(P[i]), onUpdate: applyCam }, at);
       tl.to(panels[i - 1], { autoAlpha: 0, duration: 0.3, ease: "power1.out" }, at + 0.3);
       tl.to(panels[i], { autoAlpha: 1, duration: 0.3, ease: "power1.in" }, at + 0.55);
     }
+
+    setActive(0);
+
+    // Step navigation: jump to a city's scroll position; scrub:1 animates the trip.
+    // The <html> uses scroll-behavior:smooth (Tailwind's scroll-smooth), which
+    // swallows programmatic scrollTo — force 'auto' just for the jump.
+    const st = tl.scrollTrigger!;
+    const jumpTo = (idx: number) => {
+      const clamped = Math.max(0, Math.min(total, idx));
+      const y = Math.min(st.start + (clamped / total) * (st.end - st.start), st.end - 2);
+      const html = document.documentElement;
+      const prev = html.style.scrollBehavior;
+      html.style.scrollBehavior = "auto";
+      window.scrollTo(0, y);
+      html.style.scrollBehavior = prev;
+    };
+    if (prevBtn) prevBtn.onclick = () => jumpTo(activeIdx - 1);
+    if (nextBtn) nextBtn.onclick = () => jumpTo(activeIdx + 1);
 
     triggers = ScrollTrigger.getAll();
   };
