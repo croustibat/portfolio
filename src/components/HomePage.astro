@@ -15,8 +15,8 @@ const basePath = locale === "fr" ? "/fr" : "/en";
 const copy = {
   fr: {
     currentlyBuilding: "En ce moment :",
-    currentProject: "Pinpoint app",
-    currentStatus: "MVP",
+    currentProject: "Sidecamp",
+    currentStatus: "Live",
     heroTitle: "Je crée des apps et outils web —",
     heroSubtitle: "de l'idée au déploiement.",
     heroDescription:
@@ -61,8 +61,8 @@ const copy = {
   },
   en: {
     currentlyBuilding: "Currently building:",
-    currentProject: "Pinpoint app",
-    currentStatus: "MVP",
+    currentProject: "Sidecamp",
+    currentStatus: "Live",
     heroTitle: "I build web apps & tools —",
     heroSubtitle: "from idea to deployment.",
     heroDescription:
@@ -149,7 +149,7 @@ const t = copy[locale];
       {/* Handwritten-style label */}
       <div class="animate-on-scroll mb-6">
         <a
-          href={`${basePath}/work/pinpoint`}
+          href={`${basePath}/work/sidecamp`}
           class="group inline-block rotate-[-2deg] text-sm italic text-[rgb(var(--accent))] transition hover:opacity-80 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[rgb(var(--accent))]"
         >
           {t.currentlyBuilding} <span class="underline decoration-dotted underline-offset-4">{t.currentProject}</span> <span class="arrow-bounce inline-block not-italic">→</span>
