@@ -30,3 +30,6 @@ pnpm-debug.log*
 
 # Journey map: large public-domain source data (mapData.ts is generated & committed)
 scripts/countries-50m.json
+
+# oh-my-claudecode local state
+.omc/
