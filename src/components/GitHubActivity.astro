@@ -9,21 +9,35 @@ const copy = {
     repos: "Repos publics",
     followers: "Followers",
     contributions: "Contributions",
+    contributionsLastYear: "contributions cette année",
     viewProfile: "Voir le profil",
     loading: "Chargement...",
+    less: "Moins",
+    more: "Plus",
   },
   en: {
     title: "GitHub Activity",
     repos: "Public repos",
     followers: "Followers",
     contributions: "Contributions",
+    contributionsLastYear: "contributions this year",
     viewProfile: "View profile",
     loading: "Loading...",
+    less: "Less",
+    more: "More",
   },
 };
 
 const t = copy[locale];
 const username = "croustibat";
+
+const monthNames = locale === "fr"
+  ? ["Jan", "Fév", "Mar", "Avr", "Mai", "Juin", "Juil", "Août", "Sep", "Oct", "Nov", "Déc"]
+  : ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+
+const dayNames = locale === "fr"
+  ? ["Lun", "", "Mer", "", "Ven", "", ""]
+  : ["Mon", "", "Wed", "", "Fri", "", ""];
 ---
 
 <div class="github-widget animate-on-scroll rounded-2xl border border-[rgb(var(--border)/0.6)] bg-[rgb(var(--bg-secondary))] p-6">
@@ -66,10 +80,43 @@ const username = "croustibat";
     </div>
   </div>
 
-  <!-- Contribution graph placeholder -->
+  <!-- Contribution Graph -->
   <div class="mt-6">
-    <div class="contribution-graph flex gap-[3px]" id="contribution-graph">
-      <!-- Will be filled by JS -->
+    <!-- Month labels -->
+    <div class="flex">
+      <div class="w-8 shrink-0"></div>
+      <div class="flex flex-1 overflow-hidden" id="month-labels">
+        <!-- Filled by JS -->
+      </div>
+    </div>
+
+    <!-- Graph grid -->
+    <div class="flex gap-0">
+      <!-- Day labels -->
+      <div class="flex w-8 shrink-0 flex-col gap-[3px] pr-2 text-[10px] text-[rgb(var(--text-tertiary))]">
+        {dayNames.map((day) => (
+          <div class="flex h-[11px] items-center leading-none">{day}</div>
+        ))}
+      </div>
+
+      <!-- Contribution cells -->
+      <div class="contribution-graph flex flex-1 gap-[3px] overflow-hidden" id="contribution-graph">
+        <!-- Loading skeleton -->
+        <div class="flex w-full items-center justify-center py-4" id="graph-loading">
+          <p class="text-xs text-[rgb(var(--text-tertiary))]">{t.loading}</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Legend -->
+    <div class="mt-2 flex items-center justify-end gap-1 text-[10px] text-[rgb(var(--text-tertiary))]">
+      <span>{t.less}</span>
+      <div class="contribution-cell level-0"></div>
+      <div class="contribution-cell level-1"></div>
+      <div class="contribution-cell level-2"></div>
+      <div class="contribution-cell level-3"></div>
+      <div class="contribution-cell level-4"></div>
+      <span>{t.more}</span>
     </div>
   </div>
 
@@ -81,22 +128,73 @@ const username = "croustibat";
 
 <style>
   .contribution-cell {
-    width: 10px;
-    height: 10px;
+    width: 11px;
+    height: 11px;
     border-radius: 2px;
-    transition: transform 0.2s ease;
+    transition: transform 0.15s ease;
   }
   .contribution-cell:hover {
     transform: scale(1.5);
+    outline: 1px solid rgb(var(--text-tertiary) / 0.5);
+    outline-offset: -1px;
   }
-  .level-0 { background: rgb(var(--bg-tertiary)); }
-  .level-1 { background: rgb(var(--accent) / 0.3); }
-  .level-2 { background: rgb(var(--accent) / 0.5); }
-  .level-3 { background: rgb(var(--accent) / 0.7); }
-  .level-4 { background: rgb(var(--accent)); }
+  /* Legend cells only (static, scoped OK) */
+  .level-0 { background: #ebedf0; }
+  .level-1 { background: #9be9a8; }
+  .level-2 { background: #40c463; }
+  .level-3 { background: #30a14e; }
+  .level-4 { background: #216e39; }
+
+  :global(.dark) .level-0 { background: #161b22; }
+  :global(.dark) .level-1 { background: #0e4429; }
+  :global(.dark) .level-2 { background: #006d32; }
+  :global(.dark) .level-3 { background: #26a641; }
+  :global(.dark) .level-4 { background: #39d353; }
+
+  .contribution-tooltip {
+    position: absolute;
+    bottom: calc(100% + 6px);
+    left: 50%;
+    transform: translateX(-50%);
+    background: rgb(var(--bg-primary));
+    border: 1px solid rgb(var(--border));
+    border-radius: 6px;
+    padding: 4px 8px;
+    font-size: 11px;
+    color: rgb(var(--text-secondary));
+    white-space: nowrap;
+    pointer-events: none;
+    z-index: 10;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+  }
+  .contribution-tooltip::after {
+    content: '';
+    position: absolute;
+    top: 100%;
+    left: 50%;
+    transform: translateX(-50%);
+    border: 4px solid transparent;
+    border-top-color: rgb(var(--border));
+  }
 </style>
 
-<script define:vars={{ username }}>
+<script define:vars={{ username, monthNames, t }}>
+  const lightColors = ['#ebedf0', '#9be9a8', '#40c463', '#30a14e', '#216e39'];
+  const darkColors = ['#161b22', '#0e4429', '#006d32', '#26a641', '#39d353'];
+
+  const getContributionLevel = (count) => {
+    if (count === 0) return 0;
+    if (count <= 3) return 1;
+    if (count <= 9) return 2;
+    if (count <= 19) return 3;
+    return 4;
+  };
+
+  const getColor = (level) => {
+    const isDark = document.documentElement.classList.contains('dark');
+    return isDark ? darkColors[level] : lightColors[level];
+  };
+
   const initGitHubWidget = async () => {
     try {
       // Fetch user data
@@ -109,52 +207,160 @@ const username = "croustibat";
         if (followersEl) followersEl.textContent = user.followers;
       }
 
-      // Fetch recent repos
-      const reposRes = await fetch(`https://api.github.com/users/${username}/repos?sort=updated&per_page=3`);
-      if (reposRes.ok) {
-        const repos = await reposRes.json();
-        const reposContainer = document.getElementById('recent-repos');
-        if (reposContainer) {
-          reposContainer.innerHTML = repos.map(repo => `
-            <a href="${repo.html_url}" target="_blank" rel="noreferrer"
-               class="block rounded-lg border border-[rgb(var(--border)/0.3)] bg-[rgb(var(--bg-tertiary)/0.3)] p-3 transition hover:border-[rgb(var(--accent)/0.3)]">
-              <div class="flex items-center justify-between">
-                <span class="text-sm font-medium text-[rgb(var(--text-primary))]">${repo.name}</span>
-                <span class="text-xs text-[rgb(var(--text-tertiary))]">★ ${repo.stargazers_count}</span>
-              </div>
-              ${repo.description ? `<p class="mt-1 text-xs text-[rgb(var(--text-secondary))] line-clamp-1">${repo.description}</p>` : ''}
-            </a>
-          `).join('');
+      // Fetch contribution data
+      const contribRes = await fetch(`https://github-contributions-api.jogruber.de/v4/${username}?y=last`);
+      if (contribRes.ok) {
+        const data = await contribRes.json();
+        const contributions = data.contributions || [];
+
+        // Set total contributions
+        const totalContributions = data.total?.lastYear || contributions.reduce((sum, d) => sum + d.count, 0);
+        const contributionsEl = document.getElementById('gh-contributions');
+        if (contributionsEl) contributionsEl.textContent = totalContributions.toLocaleString();
+
+        // Group contributions by week (Sun-Sat columns)
+        const weeks = [];
+        let currentWeek = [];
+
+        // Fill in missing days at the start to align to Sunday
+        if (contributions.length > 0) {
+          const firstDate = new Date(contributions[0].date);
+          const firstDay = firstDate.getDay(); // 0=Sun
+          for (let i = 0; i < firstDay; i++) {
+            currentWeek.push(null);
+          }
+        }
+
+        for (const day of contributions) {
+          const date = new Date(day.date);
+          const dayOfWeek = date.getDay();
+
+          if (dayOfWeek === 0 && currentWeek.length > 0) {
+            weeks.push(currentWeek);
+            currentWeek = [];
+          }
+          currentWeek.push(day);
+        }
+        if (currentWeek.length > 0) {
+          weeks.push(currentWeek);
+        }
+
+        // Render contribution graph
+        const graphContainer = document.getElementById('contribution-graph');
+        const loadingEl = document.getElementById('graph-loading');
+        if (loadingEl) loadingEl.remove();
+
+        if (graphContainer) {
+          let html = '';
+          for (const week of weeks) {
+            html += '<div class="flex flex-col gap-[3px]">';
+            for (let d = 0; d < 7; d++) {
+              const day = d < week.length ? week[d] : null;
+              if (day === null) {
+                html += '<div style="width:11px;height:11px;"></div>';
+              } else {
+                const level = getContributionLevel(day.count);
+                const color = getColor(level);
+                const dateStr = day.date;
+                const countLabel = day.count === 0 ? 'No' : day.count;
+                html += `<div style="width:11px;height:11px;border-radius:2px;background:${color};position:relative;cursor:pointer;transition:transform 0.15s ease;" data-level="${level}" data-date="${dateStr}" data-count="${day.count}" title="${countLabel} contribution${day.count !== 1 ? 's' : ''} on ${dateStr}" onmouseover="this.style.transform='scale(1.5)'" onmouseout="this.style.transform='scale(1)'"></div>`;
+              }
+            }
+            html += '</div>';
+          }
+          graphContainer.innerHTML = html;
+        }
+
+        // Render month labels
+        const monthLabelsContainer = document.getElementById('month-labels');
+        if (monthLabelsContainer && weeks.length > 0) {
+          // Find the month each week starts in
+          let lastMonth = -1;
+          let html = '';
+          const cellWidth = 14; // 11px cell + 3px gap
+
+          for (let i = 0; i < weeks.length; i++) {
+            const firstDay = weeks[i].find(d => d !== null);
+            if (firstDay) {
+              const date = new Date(firstDay.date);
+              const month = date.getMonth();
+              if (month !== lastMonth) {
+                html += `<span class="text-[10px] text-[rgb(var(--text-tertiary))]" style="position:absolute;left:${i * cellWidth}px;">${monthNames[month]}</span>`;
+                lastMonth = month;
+              }
+            }
+          }
+          monthLabelsContainer.style.position = 'relative';
+          monthLabelsContainer.style.height = '16px';
+          monthLabelsContainer.style.marginBottom = '4px';
+          monthLabelsContainer.innerHTML = html;
         }
       }
 
-      // Generate fake contribution graph (GitHub doesn't expose this via API easily)
-      const graphContainer = document.getElementById('contribution-graph');
-      if (graphContainer) {
-        const weeks = 20;
-        const days = 7;
-        let html = '';
-        for (let w = 0; w < weeks; w++) {
-          html += '<div class="flex flex-col gap-[3px]">';
-          for (let d = 0; d < days; d++) {
-            const level = Math.floor(Math.random() * 5);
-            html += `<div class="contribution-cell level-${level}"></div>`;
-          }
-          html += '</div>';
+      // Fetch pinned repos via GitHub profile page scraping (GraphQL needs auth)
+      // Using gh-pinned-repos.egoist.dev as a lightweight proxy
+      const pinnedRes = await fetch(`https://gh-pinned-repos.egoist.dev/?username=${username}`);
+      if (pinnedRes.ok) {
+        const pinnedRepos = await pinnedRes.json();
+        const reposContainer = document.getElementById('recent-repos');
+        if (reposContainer && pinnedRepos.length > 0) {
+          reposContainer.innerHTML = pinnedRepos.map(repo => {
+            const langColor = repo.languageColor || '#8b949e';
+            return `
+            <a href="${repo.link?.startsWith('http') ? repo.link : 'https://github.com/' + repo.link}" target="_blank" rel="noreferrer"
+               class="block rounded-lg border border-[rgb(var(--border)/0.3)] bg-[rgb(var(--bg-tertiary)/0.3)] p-3 transition hover:border-[rgb(var(--accent)/0.3)]">
+              <div class="flex items-center justify-between">
+                <div class="flex items-center gap-2">
+                  <svg class="h-4 w-4 text-[rgb(var(--text-tertiary))]" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M3 7v10a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-6l-2-2H5a2 2 0 00-2 2z"/></svg>
+                  <span class="text-sm font-medium text-[rgb(var(--accent))]">${repo.repo}</span>
+                </div>
+                <span class="text-xs text-[rgb(var(--text-tertiary))]">★ ${repo.stars || 0}</span>
+              </div>
+              ${repo.description ? `<p class="mt-1 text-xs text-[rgb(var(--text-secondary))] line-clamp-1">${repo.description}</p>` : ''}
+              ${repo.language ? `<div class="mt-2 flex items-center gap-1"><span class="inline-block h-2.5 w-2.5 rounded-full" style="background:${langColor}"></span><span class="text-[10px] text-[rgb(var(--text-tertiary))]">${repo.language}</span></div>` : ''}
+            </a>
+          `}).join('');
         }
-        graphContainer.innerHTML = html;
-
-        // Set contributions count (estimate based on graph)
-        const contributionsEl = document.getElementById('gh-contributions');
-        if (contributionsEl) {
-          const total = Math.floor(Math.random() * 500) + 200;
-          contributionsEl.textContent = `${total}+`;
+      } else {
+        // Fallback: fetch recent repos
+        const reposRes = await fetch(`https://api.github.com/users/${username}/repos?sort=updated&per_page=3`);
+        if (reposRes.ok) {
+          const repos = await reposRes.json();
+          const reposContainer = document.getElementById('recent-repos');
+          if (reposContainer) {
+            reposContainer.innerHTML = repos.map(repo => `
+              <a href="${repo.html_url}" target="_blank" rel="noreferrer"
+                 class="block rounded-lg border border-[rgb(var(--border)/0.3)] bg-[rgb(var(--bg-tertiary)/0.3)] p-3 transition hover:border-[rgb(var(--accent)/0.3)]">
+                <div class="flex items-center justify-between">
+                  <span class="text-sm font-medium text-[rgb(var(--text-primary))]">${repo.name}</span>
+                  <span class="text-xs text-[rgb(var(--text-tertiary))]">★ ${repo.stargazers_count}</span>
+                </div>
+                ${repo.description ? `<p class="mt-1 text-xs text-[rgb(var(--text-secondary))] line-clamp-1">${repo.description}</p>` : ''}
+              </a>
+            `).join('');
+          }
         }
       }
     } catch (error) {
       console.error('GitHub widget error:', error);
     }
   };
+
+  const updateGraphColors = () => {
+    const cells = document.querySelectorAll('#contribution-graph [data-level]');
+    cells.forEach(cell => {
+      const level = parseInt(cell.getAttribute('data-level'));
+      cell.style.background = getColor(level);
+    });
+  };
+
+  // Watch for theme changes
+  const observer = new MutationObserver((mutations) => {
+    for (const m of mutations) {
+      if (m.attributeName === 'class') updateGraphColors();
+    }
+  });
+  observer.observe(document.documentElement, { attributes: true });
 
   initGitHubWidget();
   document.addEventListener('astro:page-load', initGitHubWidget);
