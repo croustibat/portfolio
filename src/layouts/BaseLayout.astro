@@ -29,6 +29,7 @@ const nav =
   currentLocale === "fr"
     ? {
         work: "Projets",
+        apps: "Apps",
         oss: "Open source",
         music: "Musique",
         contact: "Contact",
@@ -38,6 +39,7 @@ const nav =
       }
     : {
         work: "Work",
+        apps: "Apps",
         oss: "Open-source",
         music: "Music",
         contact: "Contact",
@@ -117,6 +119,7 @@ const switchHref = currentLocale === "fr" ? enPath : frPath;
 
         <div class="flex items-center gap-1 text-sm">
           <a href={`${basePath}#work`} class="rounded-lg px-3 py-2 text-[rgb(var(--text-secondary))] transition hover:bg-[rgb(var(--bg-tertiary))] hover:text-[rgb(var(--text-primary))] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[rgb(var(--accent))]">{nav.work}</a>
+          <a href={`${basePath}/apps`} class="rounded-lg px-3 py-2 text-[rgb(var(--text-secondary))] transition hover:bg-[rgb(var(--bg-tertiary))] hover:text-[rgb(var(--text-primary))] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[rgb(var(--accent))]">{nav.apps}</a>
           <a href={`${basePath}#oss`} class="rounded-lg px-3 py-2 text-[rgb(var(--text-secondary))] transition hover:bg-[rgb(var(--bg-tertiary))] hover:text-[rgb(var(--text-primary))] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[rgb(var(--accent))]">{nav.oss}</a>
           <a href={`${basePath}/music`} class="rounded-lg px-3 py-2 text-[rgb(var(--text-secondary))] transition hover:bg-[rgb(var(--bg-tertiary))] hover:text-[rgb(var(--text-primary))] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[rgb(var(--accent))]">{nav.music}</a>
           <a href={`${basePath}#contact`} class="rounded-lg px-3 py-2 text-[rgb(var(--text-secondary))] transition hover:bg-[rgb(var(--bg-tertiary))] hover:text-[rgb(var(--text-primary))] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[rgb(var(--accent))]">{nav.contact}</a>

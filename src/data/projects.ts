@@ -11,6 +11,29 @@ export type Project = {
   links?: { label: I18nText; href: string }[];
   highlights: { fr: string[]; en: string[] };
   cover?: string;
+  mac?: MacApp;
+};
+
+/** macOS app distribution details — projects with this field are listed on /apps. */
+export type MacApp = {
+  icon: string;
+  /** Short punchline displayed on the app banner. */
+  tagline: I18nText;
+  /** Banner background (CSS color or gradient). */
+  tint: string;
+  /** Banner text color scheme, depending on the tint. */
+  tone: "light" | "dark";
+  /** Screenshot shown in the banner. Defaults to the project cover. */
+  shot?: string;
+  /** Ready-made banner artwork, displayed as-is instead of the composed banner. */
+  banner?: string;
+  /** Icon drawn edge to edge (no macOS icon-grid padding) — gets rounded and inset. */
+  iconBleed?: boolean;
+  distribution:
+    | { kind: "dmg"; href: string; version?: string; notarized: boolean }
+    | { kind: "appstore"; href: string }
+    | { kind: "soon"; href?: string };
+  requires: I18nText;
 };
 
 export const projects: Project[] = [
@@ -75,6 +98,19 @@ export const projects: Project[] = [
         href: "https://github.com/croustibat/Pinpoint/releases/latest",
       },
     ],
+    mac: {
+      icon: "/images/apps/pinpoint.webp",
+      tagline: { fr: "Pointez. Annotez. Promptez.", en: "Point. Annotate. Prompt." },
+      tint: "linear-gradient(135deg, #1c1c1f 0%, #2a2a2e 55%, #4a1f14 100%)",
+      tone: "dark",
+      distribution: {
+        kind: "dmg",
+        href: "https://github.com/croustibat/Pinpoint/releases/latest/download/Pinpoint.dmg",
+        version: "0.7.2",
+        notarized: true,
+      },
+      requires: { fr: "macOS 15 ou plus", en: "macOS 15 or later" },
+    },
     highlights: {
       fr: [
         "Capture de région (⌘⇧1, rebindable) — résolution native, multi-écrans et Retina",
@@ -112,6 +148,16 @@ export const projects: Project[] = [
     links: [
       { label: { fr: "Site web", en: "Website" }, href: "https://www.liquidmail.app" },
     ],
+    mac: {
+      icon: "/images/apps/liquidmail.webp",
+      iconBleed: true,
+      banner: "/images/projects/liquidmail.webp",
+      tagline: { fr: "Gmail, en mode focus.", en: "Gmail, focused." },
+      tint: "linear-gradient(135deg, #e8f1ff 0%, #dbe7ff 50%, #e9e0ff 100%)",
+      tone: "light",
+      distribution: { kind: "soon", href: "https://www.liquidmail.app" },
+      requires: { fr: "macOS 26 ou plus", en: "macOS 26 or later" },
+    },
     highlights: {
       fr: [
         "Today : la synthèse des dernières 24 h — mails prioritaires, conversations et pièces jointes",
@@ -148,7 +194,23 @@ export const projects: Project[] = [
     cover: "/images/projects/sillage.png",
     links: [
       { label: { fr: "Site web", en: "Website" }, href: "https://sillage-mac.vercel.app" },
+      { label: { fr: "Télécharger", en: "Download" }, href: "https://sillage-mac.vercel.app/telecharger" },
     ],
+    mac: {
+      icon: "/images/apps/sillage.svg",
+      iconBleed: true,
+      tagline: { fr: "Soyez dans la discussion.", en: "Stay in the conversation." },
+      tint: "linear-gradient(135deg, #0d2a30 0%, #12383f 60%, #1d5a5c 100%)",
+      tone: "dark",
+      shot: "/images/apps/sillage-shot.webp",
+      distribution: {
+        kind: "dmg",
+        href: "https://sillage-mac.vercel.app/telecharger",
+        version: "0.2.0",
+        notarized: true,
+      },
+      requires: { fr: "macOS 26 · Apple Silicon", en: "macOS 26 · Apple Silicon" },
+    },
     highlights: {
       fr: [
         "Enregistrement, transcription et résumé 100% en local, avec les technologies Apple",
@@ -221,6 +283,14 @@ export const projects: Project[] = [
     links: [
       { label: { fr: "Site web", en: "Website" }, href: "https://hive-desktop.vercel.app" },
     ],
+    mac: {
+      icon: "/images/apps/hive-desktop.webp",
+      tagline: { fr: "Une ruche d'agents IA.", en: "A hive of AI agents." },
+      tint: "linear-gradient(135deg, #17150f 0%, #231d0c 55%, #5c4208 100%)",
+      tone: "dark",
+      distribution: { kind: "soon", href: "https://hive-desktop.vercel.app" },
+      requires: { fr: "macOS", en: "macOS" },
+    },
     highlights: {
       fr: [
         "Backlog local de tickets pour piloter des agents IA de code",
@@ -259,6 +329,14 @@ export const projects: Project[] = [
         href: "https://apps.apple.com/fr/app/stackly/id6759226108",
       },
     ],
+    mac: {
+      icon: "/images/apps/stackly.webp",
+      tagline: { fr: "Vos onglets, rangés par projet.", en: "Your tabs, sorted by project." },
+      tint: "linear-gradient(135deg, #eef0ff 0%, #dfe2ff 55%, #c9cdfb 100%)",
+      tone: "light",
+      distribution: { kind: "appstore", href: "https://apps.apple.com/fr/app/stackly/id6759226108" },
+      requires: { fr: "macOS · Safari", en: "macOS · Safari" },
+    },
     highlights: {
       fr: [
         "Stacks illimités avec icônes emoji, couleurs et dossiers hiérarchiques",
