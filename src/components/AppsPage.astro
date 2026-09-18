@@ -1,0 +1,304 @@
+---
+import { projects, type Project, type MacApp } from "../data/projects";
+import type { Locale } from "../i18n";
+import { pick } from "../i18n";
+
+const { locale } = Astro.props as { locale: Locale };
+const basePath = locale === "fr" ? "/fr" : "/en";
+
+const t =
+  locale === "fr"
+    ? {
+        titleStrong: "Des apps",
+        titleMuted: "que je conçois et code pour",
+        titleEnd: "macOS.",
+        intro:
+          "Natives, légères, signées et notarisées par Apple. Téléchargez-les directement, sans passer par l'App Store.",
+        browse: "Parcourir les apps",
+        work: "Voir tous mes projets",
+        all: "Toutes",
+        available: "Disponibles",
+        soon: "Bientôt",
+        download: "Télécharger",
+        appStore: "App Store",
+        soonCta: "Bientôt",
+        notarized: "Signée et notarisée par Apple",
+        installTitle: "Installation",
+        installSteps: [
+          "Téléchargez le .dmg et ouvrez-le.",
+          "Glissez l'app dans le dossier Applications.",
+          "Lancez-la : signée Developer ID et notarisée, elle s'ouvre sans avertissement de Gatekeeper.",
+        ],
+        feedbackTitle: "Un bug, une idée ?",
+        feedbackText: "Ces apps sont construites en solo. Tous les retours sont lus.",
+        feedbackCta: "M'écrire",
+      }
+    : {
+        titleStrong: "Apps",
+        titleMuted: "I design and build for",
+        titleEnd: "macOS.",
+        intro:
+          "Native, lightweight, signed and notarized by Apple. Download them directly, no App Store required.",
+        browse: "Browse the apps",
+        work: "See all my work",
+        all: "All",
+        available: "Available",
+        soon: "Coming soon",
+        download: "Download",
+        appStore: "App Store",
+        soonCta: "Coming soon",
+        notarized: "Signed and notarized by Apple",
+        installTitle: "Installation",
+        installSteps: [
+          "Download the .dmg and open it.",
+          "Drag the app into your Applications folder.",
+          "Launch it: signed with Developer ID and notarized, it opens without any Gatekeeper warning.",
+        ],
+        feedbackTitle: "Found a bug, got an idea?",
+        feedbackText: "These apps are built solo. Every piece of feedback gets read.",
+        feedbackCta: "Get in touch",
+      };
+
+type MacProject = Project & { mac: MacApp };
+
+const isAvailable = (p: MacProject) => p.mac.distribution.kind !== "soon";
+
+// Available apps first, keeping the order defined in projects.ts
+const apps = (projects.filter((p) => p.mac) as MacProject[]).sort(
+  (a, b) => Number(isAvailable(b)) - Number(isAvailable(a)),
+);
+const availableCount = apps.filter(isAvailable).length;
+
+const filters = [
+  { key: "all", label: t.all, count: apps.length },
+  { key: "available", label: t.available, count: availableCount },
+  { key: "soon", label: t.soon, count: apps.length - availableCount },
+];
+
+const iconClass = (app: MacProject) => (app.mac.iconBleed ? "app-icon-bleed" : "");
+
+const appleLogo =
+  "M12.152 6.896c-.948 0-2.415-1.078-3.96-1.04-2.04.027-3.91 1.183-4.961 3.014-2.117 3.675-.546 9.103 1.519 12.09 1.013 1.454 2.208 3.09 3.792 3.039 1.52-.065 2.09-.987 3.935-.987 1.831 0 2.35.987 3.96.948 1.637-.026 2.676-1.48 3.676-2.948 1.156-1.688 1.636-3.325 1.662-3.415-.039-.013-3.182-1.221-3.22-4.857-.026-3.04 2.48-4.494 2.597-4.559-1.429-2.09-3.623-2.324-4.39-2.376-2-.156-3.675 1.09-4.61 1.09zM15.53 3.83c.843-1.012 1.4-2.427 1.245-3.83-1.207.052-2.662.805-3.532 1.818-.78.896-1.454 2.338-1.273 3.714 1.338.104 2.715-.688 3.559-1.701";
+---
+
+<section class="pb-16 pt-10 md:pt-16" aria-labelledby="apps-title">
+  <h1
+    id="apps-title"
+    class="animate-on-scroll max-w-4xl text-5xl font-bold leading-[0.95] tracking-tighter text-[rgb(var(--text-primary))] md:text-7xl"
+  >
+    {t.titleStrong} <span class="text-[rgb(var(--text-tertiary))]">{t.titleMuted}</span>
+    <span class="whitespace-nowrap">
+      <svg class="mb-2 inline-block h-[0.8em] w-[0.8em] md:mb-3" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+        <path d={appleLogo} />
+      </svg>{" "}{t.titleEnd}
+    </span>
+  </h1>
+
+  <p class="animate-on-scroll stagger-1 mt-6 max-w-xl text-base leading-relaxed text-[rgb(var(--text-secondary))] md:text-lg">
+    {t.intro}
+  </p>
+
+  <div class="animate-on-scroll stagger-2 mt-8 flex flex-wrap items-center gap-3">
+    <a
+      href="#apps"
+      class="inline-flex items-center gap-2 rounded-full bg-[rgb(var(--text-primary))] px-5 py-3 text-sm font-medium text-[rgb(var(--bg-primary))] transition hover:opacity-85 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[rgb(var(--accent))]"
+    >
+      <svg class="h-4 w-4" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d={appleLogo} /></svg>
+      {t.browse}
+    </a>
+    <a
+      href={`${basePath}#work`}
+      class="rounded-full border border-[rgb(var(--border))] bg-[rgb(var(--bg-secondary))] px-5 py-3 text-sm font-medium text-[rgb(var(--text-primary))] transition hover:border-[rgb(var(--text-tertiary))] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[rgb(var(--accent))]"
+    >
+      {t.work}
+    </a>
+    <div class="ml-1 flex items-center" aria-hidden="true">
+      {apps.map((app, i) => (
+        <img
+          src={app.mac.icon}
+          alt=""
+          width="48"
+          height="48"
+          class={`app-stack-icon h-12 w-12 drop-shadow-md ${iconClass(app)}`}
+          style={`margin-left: ${i === 0 ? 0 : -14}px; z-index: ${apps.length - i};`}
+        />
+      ))}
+    </div>
+  </div>
+</section>
+
+<section id="apps" class="scroll-mt-8 pb-16" aria-label={t.browse}>
+  <div class="flex flex-wrap gap-2" role="group" aria-label="Filtres">
+    {filters.map((f, i) => (
+      <button
+        type="button"
+        data-apps-filter={f.key}
+        aria-pressed={i === 0 ? "true" : "false"}
+        class="apps-filter cursor-pointer rounded-full border border-[rgb(var(--border))] px-4 py-1.5 text-sm text-[rgb(var(--text-secondary))] transition hover:border-[rgb(var(--text-tertiary))] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[rgb(var(--accent))]"
+      >
+        {f.label} <span class="ml-1 text-[rgb(var(--text-tertiary))]">{f.count}</span>
+      </button>
+    ))}
+  </div>
+
+  <div class="mt-8 grid gap-x-8 gap-y-14 md:grid-cols-2">
+    {apps.map((app) => {
+      const d = app.mac.distribution;
+      const onDark = app.mac.tone === "dark";
+      const shot = app.mac.shot ?? app.cover;
+      const caseHref = `${basePath}/work/${app.slug}`;
+      return (
+        <article class="app-card group" data-apps-status={isAvailable(app) ? "available" : "soon"}>
+          <a
+            href={caseHref}
+            class="relative block aspect-[16/10] overflow-hidden rounded-[28px] border border-black/5 transition duration-300 group-hover:shadow-xl focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[rgb(var(--accent))] dark:border-white/10"
+            style={`background: ${app.mac.tint};`}
+            aria-label={pick(app.name, locale)}
+          >
+            {app.mac.banner ? (
+              <img src={app.mac.banner} alt="" loading="lazy" class="absolute inset-0 h-full w-full object-cover object-left transition duration-500 group-hover:scale-[1.02]" />
+            ) : (
+              <>
+                <div class="relative z-10 p-6 md:p-8">
+                  <div class="flex items-center gap-2.5">
+                    <img src={app.mac.icon} alt="" width="32" height="32" class={`h-8 w-8 ${iconClass(app)}`} />
+                    <span class={`text-base font-semibold tracking-tight ${onDark ? "text-white" : "text-zinc-900"}`}>
+                      {pick(app.name, locale)}
+                    </span>
+                  </div>
+                  <p
+                    class={`mt-3 max-w-[15ch] text-balance text-2xl font-bold leading-[1.05] tracking-tight md:text-4xl ${onDark ? "text-white" : "text-zinc-900"}`}
+                  >
+                    {pick(app.mac.tagline, locale)}
+                  </p>
+                </div>
+                {shot && (
+                  <img
+                    src={shot}
+                    alt=""
+                    loading="lazy"
+                    class="absolute left-[38%] top-[60%] w-[80%] rounded-xl md:left-[30%] md:top-[48%] border border-black/10 shadow-2xl transition duration-500 group-hover:-translate-y-2"
+                  />
+                )}
+              </>
+            )}
+          </a>
+
+          <div class="mt-5 flex flex-wrap items-start gap-4">
+            <img src={app.mac.icon} alt="" width="56" height="56" class={`h-14 w-14 shrink-0 ${iconClass(app)}`} loading="lazy" />
+            <div class="min-w-0 flex-1 basis-48">
+              <h2 class="flex items-center gap-1.5 text-lg font-semibold tracking-tight text-[rgb(var(--text-primary))]">
+                <a href={caseHref} class="hover:underline hover:decoration-[rgb(var(--text-tertiary))] hover:underline-offset-4">
+                  {pick(app.name, locale)}
+                </a>
+                {d.kind === "dmg" && d.notarized && (
+                  <svg class="h-4 w-4 text-[rgb(var(--accent))]" viewBox="0 0 24 24" fill="currentColor" role="img" aria-label={t.notarized}>
+                    <title>{t.notarized}</title>
+                    <path fill-rule="evenodd" d="M8.603 3.799A4.49 4.49 0 0 1 12 2.25c1.357 0 2.573.6 3.397 1.549a4.49 4.49 0 0 1 3.498 1.307 4.491 4.491 0 0 1 1.307 3.497A4.49 4.49 0 0 1 21.75 12a4.49 4.49 0 0 1-1.549 3.397 4.491 4.491 0 0 1-1.307 3.497 4.491 4.491 0 0 1-3.497 1.307A4.49 4.49 0 0 1 12 21.75a4.49 4.49 0 0 1-3.397-1.549 4.49 4.49 0 0 1-3.498-1.306 4.491 4.491 0 0 1-1.307-3.498A4.49 4.49 0 0 1 2.25 12c0-1.357.6-2.573 1.549-3.397a4.49 4.49 0 0 1 1.307-3.497 4.49 4.49 0 0 1 3.497-1.307Zm7.007 6.387a.75.75 0 1 0-1.22-.872l-3.236 4.53L9.53 12.22a.75.75 0 0 0-1.06 1.06l2.25 2.25a.75.75 0 0 0 1.14-.094l3.75-5.25Z" clip-rule="evenodd" />
+                  </svg>
+                )}
+              </h2>
+              <p class="mt-1 line-clamp-2 text-sm text-[rgb(var(--text-secondary))]">{pick(app.oneLiner, locale)}</p>
+              <p class="mt-2 text-xs text-[rgb(var(--text-tertiary))]">
+                {d.kind === "dmg" && d.version ? `v${d.version} · ` : ""}{pick(app.mac.requires, locale)}
+              </p>
+            </div>
+
+            {d.kind === "soon" ? (
+              d.href ? (
+                <a
+                  href={d.href}
+                  class="shrink-0 rounded-full border border-[rgb(var(--border))] px-4 py-2 text-sm text-[rgb(var(--text-secondary))] transition hover:border-[rgb(var(--text-tertiary))] hover:text-[rgb(var(--text-primary))] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[rgb(var(--accent))]"
+                >
+                  {t.soonCta} ↗
+                </a>
+              ) : (
+                <span class="shrink-0 rounded-full border border-[rgb(var(--border))] px-4 py-2 text-sm text-[rgb(var(--text-tertiary))]">{t.soonCta}</span>
+              )
+            ) : (
+              <a
+                href={d.href}
+                class="inline-flex shrink-0 items-center gap-2 rounded-full bg-[rgb(var(--text-primary))] px-4 py-2 text-sm font-medium text-[rgb(var(--bg-primary))] transition hover:opacity-85 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[rgb(var(--accent))]"
+                aria-label={`${d.kind === "dmg" ? t.download : t.appStore} ${pick(app.name, locale)}`}
+              >
+                <svg class="h-4 w-4" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d={appleLogo} /></svg>
+                {d.kind === "dmg" ? t.download : t.appStore}
+              </a>
+            )}
+          </div>
+        </article>
+      );
+    })}
+  </div>
+</section>
+
+<section class="grid gap-6 pb-16 md:grid-cols-2">
+  <div class="rounded-3xl border border-[rgb(var(--border))] bg-[rgb(var(--bg-secondary))] p-8">
+    <h2 class="text-lg font-semibold tracking-tight text-[rgb(var(--text-primary))]">{t.installTitle}</h2>
+    <ol class="mt-4 space-y-3 text-sm text-[rgb(var(--text-secondary))]">
+      {t.installSteps.map((step, i) => (
+        <li class="flex gap-3">
+          <span class="flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-[rgb(var(--accent)/0.1)] text-xs font-semibold text-[rgb(var(--accent))]">{i + 1}</span>
+          <span class="pt-0.5">{step}</span>
+        </li>
+      ))}
+    </ol>
+  </div>
+  <div class="flex flex-col justify-between rounded-3xl border border-[rgb(var(--border))] bg-[rgb(var(--bg-secondary))] p-8">
+    <div>
+      <h2 class="text-lg font-semibold tracking-tight text-[rgb(var(--text-primary))]">{t.feedbackTitle}</h2>
+      <p class="mt-2 text-sm text-[rgb(var(--text-secondary))]">{t.feedbackText}</p>
+    </div>
+    <div class="mt-6">
+      <a
+        href={`${basePath}#contact`}
+        class="inline-flex rounded-full bg-[rgb(var(--text-primary))] px-5 py-2.5 text-sm font-medium text-[rgb(var(--bg-primary))] transition hover:opacity-85 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[rgb(var(--accent))]"
+      >
+        {t.feedbackCta}
+      </a>
+    </div>
+  </div>
+</section>
+
+<style>
+  .apps-filter[aria-pressed="true"] {
+    background-color: rgb(var(--text-primary));
+    border-color: rgb(var(--text-primary));
+    color: rgb(var(--bg-primary));
+  }
+  .apps-filter[aria-pressed="true"] span {
+    color: rgb(var(--bg-primary) / 0.6);
+  }
+  /* Match the macOS icon grid (824/1024) for icons drawn edge to edge */
+  .app-icon-bleed {
+    border-radius: 22.5%;
+    transform: scale(0.8);
+  }
+  .app-stack-icon {
+    transition: transform 0.25s ease;
+  }
+  .app-stack-icon:hover {
+    transform: translateY(-4px);
+  }
+  .app-stack-icon.app-icon-bleed:hover {
+    transform: translateY(-4px) scale(0.8);
+  }
+</style>
+
+<script>
+  const initAppsFilter = () => {
+    const buttons = document.querySelectorAll<HTMLButtonElement>("[data-apps-filter]");
+    const cards = document.querySelectorAll<HTMLElement>("[data-apps-status]");
+    buttons.forEach((button) => {
+      button.addEventListener("click", () => {
+        const filter = button.dataset.appsFilter;
+        buttons.forEach((b) => b.setAttribute("aria-pressed", String(b === button)));
+        cards.forEach((card) => {
+          card.hidden = filter !== "all" && card.dataset.appsStatus !== filter;
+        });
+      });
+    });
+  };
+
+  document.addEventListener("astro:page-load", initAppsFilter);
+</script>
