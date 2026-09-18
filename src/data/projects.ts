@@ -15,6 +15,44 @@ export type Project = {
 
 export const projects: Project[] = [
   {
+    slug: "sidecamp",
+    name: {
+      fr: "Sidecamp",
+      en: "Sidecamp",
+    },
+    type: "SaaS",
+    status: "Live",
+    year: "2026",
+    oneLiner: {
+      fr: "Explorateur musical pour Bandcamp — partez d'un album, suivez les liens entre les musiques et trouvez ce que vous ne cherchiez pas.",
+      en: "Music explorer for Bandcamp — start from an album, follow the links between records and find what you weren't looking for.",
+    },
+    tags: ["Web app", "Music", "Discovery", "Bandcamp", "Product"],
+    cover: "/images/projects/sidecamp.webp",
+    links: [
+      { label: { fr: "Site web", en: "Website" }, href: "https://sidecamp.app" },
+      { label: { fr: "Explorer", en: "Explore" }, href: "https://play.sidecamp.app" },
+    ],
+    highlights: {
+      fr: [
+        "Chemins de découverte d'album en album, construits à partir des tags et recommandations Bandcamp",
+        "Recherche par album, artiste, label ou titre — et un « Surprenez-moi » pour partir à l'aventure",
+        "Deux modes d'écoute : Album (titres dans l'ordre) et Découverte (file continue d'un album à l'autre)",
+        "Vue carte pour visualiser les connexions entre albums, et une radio",
+        "Sans compte ni installation : favoris et historique restent dans le navigateur",
+        "À venir : l'exploration des scènes locales, ville par ville (Nantes, Paris, Berlin…)",
+      ],
+      en: [
+        "Discovery paths from album to album, built from Bandcamp tags and recommendations",
+        "Search by album, artist, label or track — plus a “Surprise me” to wander off",
+        "Two listening modes: Album (tracks in order) and Discovery (continuous queue across albums)",
+        "Map view to visualize the connections between albums, plus a radio",
+        "No account, no install: favorites and history stay in your browser",
+        "Coming next: exploring local scenes, city by city (Nantes, Paris, Berlin…)",
+      ],
+    },
+  },
+  {
     slug: "pinpoint",
     name: {
       fr: "Pinpoint",
@@ -53,6 +91,80 @@ export const projects: Project[] = [
         "Optional baked-in legend — a single paste carries the image and the instructions",
         "The Shelf: built-in capture library (favorite, sort, Quick Look, reopen with annotations)",
         "100% native SwiftUI + ScreenCaptureKit, menu-bar app — your captures never leave your Mac",
+      ],
+    },
+  },
+  {
+    slug: "liquidmail",
+    name: {
+      fr: "LiquidMail",
+      en: "LiquidMail",
+    },
+    type: "SaaS",
+    status: "In progress",
+    year: "2026",
+    oneLiner: {
+      fr: "Client Gmail natif pour macOS qui range vos mails par urgence — ce qui demande une action maintenant, et ce qui peut attendre.",
+      en: "Native Gmail client for macOS that sorts your mail by urgency — what needs action now, and what can wait.",
+    },
+    tags: ["Swift", "SwiftUI", "macOS", "Gmail", "AI Agents"],
+    cover: "/images/projects/liquidmail.webp",
+    links: [
+      { label: { fr: "Site web", en: "Website" }, href: "https://www.liquidmail.app" },
+    ],
+    highlights: {
+      fr: [
+        "Today : la synthèse des dernières 24 h — mails prioritaires, conversations et pièces jointes",
+        "Unified Inbox : plusieurs comptes Gmail (pro + perso) réunis en un seul point de focus",
+        "Quiet : newsletters et mails automatiques mis de côté pour libérer l'inbox",
+        "Files : tous les fichiers de tous les comptes, avec recherche",
+        "Agents via MCP, en local, avec validation manuelle avant chaque action",
+        "100% natif SwiftUI, identifiants dans le Keychain — sortie prévue sur le Mac App Store",
+      ],
+      en: [
+        "Today: a digest of the last 24h — priority mail, conversations and attachments",
+        "Unified Inbox: several Gmail accounts (work + personal) merged into a single focus point",
+        "Quiet: newsletters and automated mail set aside to free up the inbox",
+        "Files: every file from every account, searchable",
+        "Local agents via MCP, with manual approval before every action",
+        "100% native SwiftUI, credentials stored in the Keychain — coming to the Mac App Store",
+      ],
+    },
+  },
+  {
+    slug: "sillage",
+    name: {
+      fr: "Sillage",
+      en: "Sillage",
+    },
+    type: "Experiment",
+    status: "In progress",
+    year: "2026",
+    oneLiner: {
+      fr: "App macOS qui enregistre vos réunions et en tire transcription, compte rendu et tâches — entièrement sur le Mac.",
+      en: "macOS app that records your meetings and turns them into a transcript, summary and tasks — entirely on your Mac.",
+    },
+    tags: ["Swift", "SwiftUI", "macOS", "Apple Intelligence", "Indie"],
+    cover: "/images/projects/sillage.png",
+    links: [
+      { label: { fr: "Site web", en: "Website" }, href: "https://sillage-mac.vercel.app" },
+    ],
+    highlights: {
+      fr: [
+        "Enregistrement, transcription et résumé 100% en local, avec les technologies Apple",
+        "Double piste audio : micro et son du Mac captés séparément",
+        "Compte rendu structuré : idées clés, décisions et tâches assignées",
+        "Export en Markdown, accompagné de l'audio",
+        "App discrète en barre de menu, avec un mode visio et un mode présentiel",
+        "En test sur de vraies réunions — Apple Silicon, macOS 26 et Apple Intelligence requis",
+      ],
+      en: [
+        "Recording, transcription and summary 100% on-device, using Apple technologies",
+        "Dual-track audio: microphone and Mac system audio captured separately",
+        "Structured report: key ideas, decisions and assigned tasks",
+        "Markdown export, alongside the audio",
+        "Unobtrusive menu-bar app, with remote-call and in-person modes",
+        "Being tested on real meetings — requires Apple Silicon, macOS 26 and Apple Intelligence",
       ],
     },
   },
