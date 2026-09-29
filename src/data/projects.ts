@@ -32,6 +32,7 @@ export type MacApp = {
   distribution:
     | { kind: "dmg"; href: string; version?: string; notarized: boolean }
     | { kind: "appstore"; href: string }
+    | { kind: "source"; href: string }
     | { kind: "soon"; href?: string };
   requires: I18nText;
 };
@@ -72,6 +73,56 @@ export const projects: Project[] = [
         "Map view to visualize the connections between albums, plus a radio",
         "No account, no install: favorites and history stay in your browser",
         "Coming next: exploring local scenes, city by city (Nantes, Paris, Berlin…)",
+      ],
+    },
+  },
+  {
+    slug: "murmure",
+    name: {
+      fr: "Murmure",
+      en: "Murmure",
+    },
+    type: "Open-source",
+    status: "Live",
+    year: "2026",
+    oneLiner: {
+      fr: "Dictée vocale globale pour macOS, 100 % locale — un raccourci, vous parlez, le texte s'écrit dans l'app active.",
+      en: "Global voice dictation for macOS, 100% local — hold a shortcut, speak, and the text lands in the active app.",
+    },
+    tags: ["Swift", "macOS", "Whisper", "Local-first", "Open-source"],
+    cover: "/images/projects/murmure.webp",
+    links: [
+      { label: { fr: "GitHub", en: "GitHub" }, href: "https://github.com/croustibat/murmure" },
+      {
+        label: { fr: "Dernière version", en: "Latest release" },
+        href: "https://github.com/croustibat/murmure/releases/latest",
+      },
+    ],
+    mac: {
+      icon: "/images/apps/murmure.webp",
+      tagline: { fr: "Parlez. Le texte suit.", en: "Speak. The text follows." },
+      tint: "linear-gradient(135deg, #2d1065 0%, #4c1d95 55%, #7c3aed 100%)",
+      tone: "dark",
+      shot: "/images/apps/murmure-shot.webp",
+      distribution: { kind: "source", href: "https://github.com/croustibat/murmure" },
+      requires: { fr: "macOS 14 ou plus · Homebrew", en: "macOS 14 or later · Homebrew" },
+    },
+    highlights: {
+      fr: [
+        "Un raccourci global : maintenez, parlez, relâchez — le texte est collé dans l'app active",
+        "Transcription par Whisper large-v3-turbo en local, hors ligne : rien ne quitte le Mac",
+        "Environ 2 secondes entre la fin de la phrase et le texte collé",
+        "Pastille flottante avec une onde qui suit la voix, et une icône discrète en barre des menus",
+        "Dictionnaire de correction pour le vocabulaire technique (« commis » → « commit »)",
+        "Sans compte, sans abonnement ni clé API — installation par script, open-source",
+      ],
+      en: [
+        "One global shortcut: hold, speak, release — the text is pasted into the active app",
+        "Transcription by Whisper large-v3-turbo, local and offline: nothing leaves the Mac",
+        "Around 2 seconds between the end of your sentence and the pasted text",
+        "Floating pill with a waveform that follows your voice, plus a discreet menu-bar icon",
+        "Correction dictionary for technical vocabulary (French “commis” → “commit”)",
+        "No account, no subscription, no API key — script install, open-source",
       ],
     },
   },
